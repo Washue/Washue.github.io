@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор рецептов KubeJS</title>
+    <link rel="icon" href="https://mmcreviews.com/wp-content/uploads/2023/05/kubejs.png" type="image/png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #8b0000;
+            --primary-light: #ff4d4d;
+            --bg-dark: rgba(20, 20, 20, 0.9);
+            --bg-light: rgba(40, 40, 40, 0.7);
+            --text-color: #f0f0f0;
+            --text-accent: #ff6b6b;
+            --border-color: rgba(255, 50, 50, 0.3);
+            --tab-active-bg: #8b0000;
+            --tab-hover-bg: #5a0000;
+        }
+        
+        * {
+            box-sizing: border-box;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://i.pinimg.com/736x/5b/c7/1e/5bc71e75c66b5700ff877e1eff909933.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container {
+            background-color: var(--bg-dark);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px auto;
+            width: 90%;
+            max-width: 850px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-color);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s forwards 0.2s;
+            position: relative;
+            padding-bottom: 50px;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards 0.4s;
+        }
+        
+        .minecraft-icon {
+            display: block;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: url('https://mmcreviews.com/wp-content/uploads/2023/05/kubejs.png') no-repeat center center;
+            background-size: contain;
+            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.7));
+        }
+        
+        h1 {
+            color: var(--primary-light);
+            margin: 0;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            font-weight: 700;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #ff8a8a, #ff4d4d, #ff8a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shineText 3s linear infinite;
+        }
+        
+        @keyframes shineText {
+            to {
+                background-position: 200% center;
+            }
+        }
+        
+        .crafting-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 35px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards 0.6s;
+        }
+        
+        .slot {
+            background-color: var(--bg-light);
+            border: 2px solid rgba(100, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 15px 10px;
+            text-align: center;
+            height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slot::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.03) 0%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            pointer-events: none;
+        }
+        
+        .slot:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
+            border-color: rgba(255, 50, 50, 0.8);
+        }
+        
+        .slot label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-accent);
+            font-size: 0.85rem;
+        }
+        
+        .slot input {
+            width: 90%;
+            margin: 3px auto;
+            padding: 8px;
+            background-color: rgba(30, 30, 30, 0.9);
+            border: 1px solid rgba(150, 0, 0, 0.6);
+            border-radius: 6px;
+            color: white;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        .slot input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(255, 50, 50, 0.3);
+        }
+        
+        .result-section {
+            margin: 35px 0;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards 0.8s;
+            position: relative;
+        }
+        
+        .result-section label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--text-accent);
+            font-size: 1.1rem;
+        }
+        
+        .result-input-container {
+            position: relative;
+            display: inline-block;
+            width: 70%;
+            max-width: 600px;
+        }
+        
+        .placeholder-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            font-style: italic;
+            transition: all 0.3s;
+            width: 100%;
+            padding: 0 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .result-input-container.filled .placeholder-text {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+        }
+        
+        #result-item {
+            width: 100%;
+            padding: 12px 20px;
+            background-color: rgba(30, 30, 30, 0.9);
+            border: 1px solid rgba(150, 0, 0, 0.6);
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 25px 0;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards 1s;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .button {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            transition: transform 0.2s, box-shadow 0.2s;
+            min-width: 160px;
+        }
+        
+        .button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.6);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+        }
+        
+        .button:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.5);
+        }
+        
+        .button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 45%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0) 55%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shine 4s infinite;
+            animation-delay: 0.5s;
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -60%;
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+        
+        .output-container {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards 1.2s;
+        }
+        
+        .output {
+            background-color: rgba(10, 10, 10, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            color: #f0f0f0;
+            position: relative;
+            min-height: 200px;
+            text-align: left;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+            overflow: auto;
+            max-height: 400px;
+        }
+        
+        .output pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+        }
+        
+        .copy-btn:hover {
+            color: var(--text-accent);
+        }
+        
+        .copy-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-color);
+            opacity: 0;
+            animation: fadeIn 0.5s forwards 0.5s;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            background-color: rgba(40, 40, 40, 0.5);
+            margin: 0 8px 8px 8px;
+            border-radius: 50px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: #aaa;
+            border: 2px solid transparent;
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.5);
+            transform: translateY(-2px);
+            border: 2px solid rgba(255, 100, 100, 0.5);
+        }
+        
+        .tab:hover:not(.active) {
+            background-color: var(--tab-hover-bg);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #006600, #00aa00);
+            padding: 12px 20px;
+        }
+        
+        .download-btn::after {
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 45%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0) 55%,
+                rgba(255, 255, 255, 0) 100%
+            );
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(135deg, #00aa00, #006600);
+        }
+        
+        .credits {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .credits:hover {
+            color: var(--text-accent);
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+        }
+        
+        .social-icons {
+            position: absolute;
+            bottom: 40px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+        
+        .credits:hover .social-icons {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 15px rgba(255, 0, 0, 0.4);
+        }
+        
+        .discord-popup {
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 30;
+            display: none;
+        }
+        
+        .discord-popup.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .discord-popup p {
+            margin: 0 0 15px 0;
+            font-size: 0.9rem;
+            text-align: center;
+            color: var(--text-accent);
+        }
+        
+        .discord-popup button {
+            background: linear-gradient(135deg, #7289da, #5865F2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .discord-popup button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(114, 137, 218, 0.4);
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .header-container {
+                margin-bottom: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .minecraft-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .crafting-grid {
+                gap: 12px;
+            }
+            
+            .slot {
+                padding: 12px 8px;
+                height: 100px;
+            }
+            
+            .slot input {
+                padding: 6px;
+                font-size: 0.75rem;
+            }
+            
+            .result-input-container {
+                width: 90%;
+            }
+            
+            .button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                min-width: 140px;
+            }
+            
+            .tab {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .crafting-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .slot {
+                padding: 10px 5px;
+                height: 90px;
+            }
+            
+            .slot label {
+                font-size: 0.75rem;
+                margin-bottom: 5px;
+            }
+            
+            .slot input {
+                padding: 5px;
+                font-size: 0.7rem;
+            }
+            
+            .button {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+                min-width: 120px;
+            }
+            
+            .button-container {
+                gap: 10px;
+            }
+            
+            .credits {
+                font-size: 0.7rem;
+                right: 10px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tab {
+                width: 90%;
+                margin: 5px 0;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .social-icons {
+                bottom: 35px;
+                right: 10px;
+            }
+            
+            .discord-popup {
+                bottom: 80px;
+                right: -10px;
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <div class="minecraft-icon"></div>
+            <h1>ГЕНЕРАТОР РЕЦЕПТОВ KUBEJS 1.20</h1>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('shaped')">Обычный крафт</div>
+            <div class="tab" onclick="switchTab('shapeless')">Позже</div>
+        </div>
+        
+        <div id="shaped" class="tab-content active">
+            <div class="crafting-grid">
+                <!-- Ряд 1 -->
+                <div class="slot">
+                    <label>Слот 1</label>
+                    <input type="text" id="a1" placeholder="(Буква)" maxlength="1">
+                    <input type="text" id="a1-meta" placeholder="ID предмета">
+                </div>
+                <div class="slot">
+                    <label>Слот 2</label>
+                    <input type="text" id="b1" placeholder="(Буква)" maxlength="1">
+                    <input type="text" id="b1-meta" placeholder="ID предмета">
+                </div>
+                <div class="slot">
+                    <label>Слот 3</label>
+                    <input type="text" id="c1" placeholder="(Буква)" maxlength="1">
+                    <input type="text" id="c1-meta" placeholder="ID предмета">
+                </div>
+                
+                <!-- Ряд 2 -->
+                <div class="slot">
+                    <label>Слот 4</label>
+                    <input type="text" id="a2" placeholder="(Буква)" maxlength="1">
+                    <input type="text" id="a2-meta" placeholder="ID предмета">
+                </div>
+                <div class="slot">
+                    <label>Слот 5</label>
+                    <input type="text" id="b2" placeholder="(Буква)" maxlength="1">
+                    <input type="text" id="b2-meta" placeholder="ID предмета">
+                </div>
+                <div class="slot">
+                    <label>Слот 6</label>
+                    <input type="text" id="c2" placeholder="(Буква)" maxlength="1">
+                    <input type="text" id="c2-meta" placeholder="ID предмета">
+                </div>
+                
+                <!-- Ряд 3 -->
+                <div class="slot">
+                    <label>Слот 7</label>
+                    <input type="text" id="a3" placeholder="(Буква)" maxlength="1">
+                    <input type="text" id="a3-meta" placeholder="ID предмета">
+                </div>
+                <div class="slot">
+                    <label>Слот 8</label>
+                    <input type="text" id="b3" placeholder="(Буква)" maxlength="1">
+                    <input type="text" id="b3-meta" placeholder="ID предмета">
+                </div>
+                <div class="slot">
+                    <label>Слот 9</label>
+                    <input type="text" id="c3" placeholder="(Буква)" maxlength="1">
+                    <input type="text" id="c3-meta" placeholder="ID предмета">
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <label for="result-item">Результат крафта (с NBT/зачарованиями):</label>
+                <div class="result-input-container" id="result-container">
+                    <input type="text" id="result-item" placeholder=" ">
+                    <div class="placeholder-text">Укажите предмет/блок который должен получиться на выходе</div>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="button" onclick="generateRecipe()">ПОЕХАЛИ!!</button>
+                <button class="button download-btn" onclick="downloadScript()">Сохранить</button>
+            </div>
+            
+            <div class="output-container">
+                <div class="output" id="output">
+                    <button class="copy-btn" onclick="copyToClipboard()">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                        </svg>
+                    </button>
+                    <pre>Здесь появится сгенерированный код рецепта...</pre>
+                </div>
+            </div>
+            
+            <div class="credits">
+                Написал и разработал vitya1228®
+                <div class="social-icons">
+                    <div class="social-icon discord-btn" onclick="toggleDiscordPopup(event)">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.24 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08-.01-.11c.11-.08.22-.17.33-.25c.02-.02.05-.02.07-.01c3.44 1.57 7.15 1.57 10.55 0c.02-.01.05-.01.07.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.52.31-1.07.56-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.83 2.12-1.89 2.12z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="social-icon telegram-btn" onclick="window.open('https://t.me/washue', '_blank')">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.9-.86.56-2.49-1.73-3.57-2.84-5.79-4.56-.63-.5-1.22-1.5-1.12-2.33.03-.26.38-.38.69-.3 1.89.57 5.04 1.87 7.61 2.76.74.26 1.22.12 1.37-.65.24-1.17.88-4.12 1.01-5.38.09-.69-.26-1-.94-.78-1.74.49-8.11 3.15-8.25 3.19-.58.18-.84.28-.82.62.02.32.4.47.9.65 1.48.52 2.57.8 3.78 1.18.58.18 1.1.15 1.5-.05.54-.28 1.26-.78 1.89-1.25.24-.18.43-.27.72-.22.28.05.45.28.4.78z" fill="white"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="discord-popup" id="discordPopup">
+                    <p>мой дискорд qweangelok</p>
+                    <button onclick="window.open('https://discord.gg/Nt3apZYqz7', '_blank')">GravityCraft</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="shapeless" class="tab-content">
+            <div style="text-align: center; padding: 50px 20px;">
+                <h3 style="color: var(--text-accent); font-size: 1.5rem; margin-bottom: 20px; text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);">Функция в разработке</h3>
+                <p style="font-size: 1.1rem; line-height: 1.6; max-width: 500px; margin: 0 auto;">Эта функция появится в следующем обновлении! Следите за обновлениями на нашем сайте.</p>
+                <div style="margin-top: 30px; font-size: 3rem; color: var(--primary-light);">🔧</div>
+            </div>
+            <div class="credits">Написал и разработал vitya1228®</div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Отслеживаем ввод в поле результата
+            const resultItem = document.getElementById('result-item');
+            const resultContainer = document.getElementById('result-container');
+            
+            resultItem.addEventListener('input', function() {
+                if (this.value.trim() !== '') {
+                    resultContainer.classList.add('filled');
+                } else {
+                    resultContainer.classList.remove('filled');
+                }
+            });
+            
+            // Ограничиваем ввод буквенных полей до 1 символа
+            document.querySelectorAll('input[placeholder="(Буква)"]').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.value.length > 1) {
+                        this.value = this.value.charAt(0);
+                    }
+                });
+            });
+            
+            // Добавляем подсказки при фокусе
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-5px)';
+                    this.parentElement.style.boxShadow = '0 10px 25px rgba(255, 0, 0, 0.4)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = '';
+                    this.parentElement.style.boxShadow = '';
+                });
+            });
+            
+            // Принудительно запускаем анимации после загрузки
+            setTimeout(() => {
+                document.querySelector('.container').style.animation = 'fadeIn 0.6s forwards';
+                document.querySelector('.header-container').style.animation = 'fadeIn 0.5s forwards';
+                document.querySelector('.crafting-grid').style.animation = 'fadeIn 0.5s forwards';
+                document.querySelector('.result-section').style.animation = 'fadeIn 0.5s forwards';
+                document.querySelector('.button-container').style.animation = 'fadeIn 0.5s forwards';
+                document.querySelector('.output-container').style.animation = 'fadeIn 0.5s forwards';
+                document.querySelector('.tabs').style.animation = 'fadeIn 0.5s forwards';
+            }, 300);
+        });
+        
+        function generateRecipe() {
+            // Получаем все значения из полей ввода
+            const slots = [
+                { id: 'a1', meta: 'a1-meta' },
+                { id: 'b1', meta: 'b1-meta' },
+                { id: 'c1', meta: 'c1-meta' },
+                { id: 'a2', meta: 'a2-meta' },
+                { id: 'b2', meta: 'b2-meta' },
+                { id: 'c2', meta: 'c2-meta' },
+                { id: 'a3', meta: 'a3-meta' },
+                { id: 'b3', meta: 'b3-meta' },
+                { id: 'c3', meta: 'c3-meta' }
+            ];
+            
+            // Создаем шаблон и ингредиенты
+            let pattern = [];
+            let ingredients = {};
+            
+            // Обрабатываем каждый слот
+            for (let i = 0; i < slots.length; i++) {
+                const slot = slots[i];
+                let letter = document.getElementById(slot.id).value.trim().toUpperCase();
+                const itemId = document.getElementById(slot.meta).value.trim();
+                
+                // Если буква не указана, но предмет указан - генерируем букву
+                if (itemId && !letter) {
+                    letter = String.fromCharCode(65 + i); // Генерируем букву A-I
+                }
+                
+                // Если буква указана или сгенерирована
+                if (letter) {
+                    // Если предмет указан, добавляем в ингредиенты
+                    if (itemId) {
+                        ingredients[letter] = itemId;
+                    }
+                    // Добавляем в шаблон
+                    pattern.push(letter);
+                } else {
+                    // Если нет буквы и нет предмета - добавляем пробел
+                    pattern.push(' ');
+                }
+            }
+            
+            // Разбиваем шаблон на 3 строки
+            const patternRows = [];
+            for (let i = 0; i < 9; i += 3) {
+                patternRows.push(pattern.slice(i, i + 3).join(''));
+            }
+            
+            // Получаем предмет результата
+            let resultItem = document.getElementById('result-item').value.trim();
+            if (!resultItem) {
+                resultItem = ' ';
+            }
+            
+            // Генерируем код с правильным форматированием
+            let code = `ServerEvents.recipes(event => {\n    event.shaped('${resultItem}', [\n`;
+            
+            // Добавляем строки шаблона (всегда 3 строки)
+            patternRows.forEach((row, index) => {
+                const comma = index < patternRows.length - 1 ? ',' : '';
+                // Если строка полностью пустая - оставляем как есть
+                code += `        '${row || "   "}'${comma}\n`;
+            });
+            
+            // Добавляем ингредиенты с правильным форматированием
+            code += `      ], {\n`;
+            const ingredientKeys = Object.keys(ingredients);
+            ingredientKeys.forEach((key, index) => {
+                const comma = index < ingredientKeys.length - 1 ? ',' : '';
+                code += `        ${key}: '${ingredients[key]}'${comma}\n`;
+            });
+            
+            // Завершаем рецепт
+            code += `      })\n    })`;
+            
+            // Отображаем код
+            const outputElement = document.getElementById('output');
+            outputElement.innerHTML = `
+                <button class="copy-btn" onclick="copyToClipboard()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                </button>
+                <pre>${code}</pre>
+            `;
+            
+            // Анимация появления результата
+            outputElement.style.animation = 'none';
+            setTimeout(() => {
+                outputElement.style.animation = 'fadeIn 0.5s forwards';
+            }, 10);
+        }
+        
+        function copyToClipboard() {
+            const output = document.getElementById('output');
+            const text = output.querySelector('pre').textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const copyBtn = output.querySelector('.copy-btn');
+                copyBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                    </svg>
+                `;
+                setTimeout(() => {
+                    copyBtn.innerHTML = `
+                        <svg viewBox="0 0 24 24">
+                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                        </svg>
+                    `;
+                }, 2000);
+            }).catch(err => {
+                console.error('Ошибка копирования: ', err);
+                alert('Не удалось скопировать текст. Попробуйте выделить и скопировать вручную.');
+            });
+        }
+        
+        function downloadScript() {
+            const output = document.getElementById('output');
+            const text = output.querySelector('pre')?.textContent;
+            
+            if (!text || text.includes('...')) {
+                alert('Сначала сгенерируйте рецепт!');
+                return;
+            }
+            
+            try {
+                const blob = new Blob([text], { type: 'text/javascript' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'kubejs_recipe.js';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (err) {
+                console.error('Ошибка сохранения: ', err);
+                alert('Не удалось сохранить файл. Попробуйте скопировать код вручную.');
+            }
+        }
+        
+        function switchTab(tabId) {
+            // Скрываем все вкладки
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Показываем выбранную вкладку
+            document.getElementById(tabId).classList.add('active');
+            
+            // Обновляем кнопки вкладок
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Находим кнопку, которая была нажата
+            const tabs = document.querySelectorAll('.tab');
+            for (let i = 0; i < tabs.length; i++) {
+                if (tabs[i].textContent.toLowerCase().includes(tabId.toLowerCase())) {
+                    tabs[i].classList.add('active');
+                    break;
+                }
+            }
+        }
+        
+        function toggleDiscordPopup(event) {
+            event.stopPropagation();
+            const popup = document.getElementById('discordPopup');
+            popup.classList.toggle('show');
+        }
+        
+        // Закрытие popup при клике вне его
+        document.addEventListener('click', function(event) {
+            const popup = document.getElementById('discordPopup');
+            if (!event.target.closest('.discord-popup') && !event.target.closest('.discord-btn')) {
+                popup.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
