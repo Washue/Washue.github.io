@@ -742,7 +742,7 @@
                     </div>
                 </div>
                 <div class="discord-popup" id="discordPopup">
-                    <p>мой дискорд qweangelok</p>
+                    <p>Мой дискорд: qweangelok</p>
                     <button onclick="window.open('https://discord.gg/Nt3apZYqz7', '_blank')">GravityCraft</button>
                 </div>
             </div>
@@ -863,7 +863,7 @@
             }
             
             // Генерируем код с правильным форматированием
-            let code = `ServerEvents.recipes(event => {\n    event.shaped('${resultItem}', [\n`;
+            let code = `ServerEvents.recipes(event => {\n    event.shaped(${resultItem}, [\n`;
             
             // Добавляем строки шаблона (всегда 3 строки)
             patternRows.forEach((row, index) => {
