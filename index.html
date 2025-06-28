@@ -3,989 +3,1233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генератор рецептов KubeJS</title>
-    <link rel="icon" href="https://mmcreviews.com/wp-content/uploads/2023/05/kubejs.png" type="image/png">
+    <title>Аниме тяночка - ваш персональный помощник</title>
+    <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/d7/d6/04/d7d604934ae27cd063f210b5744124ea.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
-        
-        :root {
-            --primary-color: #8b0000;
-            --primary-light: #ff4d4d;
-            --bg-dark: rgba(20, 20, 20, 0.9);
-            --bg-light: rgba(40, 40, 40, 0.7);
-            --text-color: #f0f0f0;
-            --text-accent: #ff6b6b;
-            --border-color: rgba(255, 50, 50, 0.3);
-            --tab-active-bg: #8b0000;
-            --tab-hover-bg: #5a0000;
-        }
-        
         * {
-            box-sizing: border-box;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        body {
-            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
-            background: url('https://i.pinimg.com/736x/5b/c7/1e/5bc71e75c66b5700ff877e1eff909933.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: var(--text-color);
+            box-sizing: border-box;
+            font-family: 'M PLUS Rounded 1c', 'Nunito', sans-serif;
+        }
+
+        :root {
+            --primary: #ff6b9c;
+            --secondary: #9c5fff;
+            --dark: #1a1a2e;
+            --darker: #0d0d1a;
+            --light: #f8f9fa;
+            --accent: #5ff3ff;
+            --pink-light: #ffd6e7;
+            --purple-light: #d6c8ff;
+        }
+
+        body {
+            background: url('https://p4.wallpaperbetter.com/wallpaper/584/149/276/selective-coloring-black-background-dark-background-simple-background-anime-girls-hd-wallpaper-preview.jpg') center/cover fixed;
+            color: var(--light);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            backdrop-filter: blur(8px);
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        .container {
-            background-color: var(--bg-dark);
-            border-radius: 16px;
-            padding: 30px;
-            margin: 30px auto;
-            width: 90%;
-            max-width: 850px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border-color);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.6s forwards 0.2s;
+            overflow-x: hidden;
+            line-height: 1.6;
             position: relative;
-            padding-bottom: 50px;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 13, 26, 0.85);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 40px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .bot-avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 5px solid var(--primary);
+            box-shadow: 0 0 40px rgba(255, 107, 156, 0.7);
+            margin: 0 auto 25px;
+            background: url('https://i.pinimg.com/736x/d7/d6/04/d7d604934ae27cd063f210b5744124ea.jpg') center/cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bot-avatar::after {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 10s linear infinite;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: var(--pink-light);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .invite-btn {
+            display: inline-block;
+            background: rgba(156, 95, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 20px 0;
+            box-shadow: 0 5px 25px rgba(156, 95, 255, 0.3);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(156, 95, 255, 0.5);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        .invite-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(156, 95, 255, 0.5);
+            background: rgba(156, 95, 255, 0.25);
+        }
+
+        .invite-btn:active {
+            transform: translateY(0);
+        }
+
+        .invite-btn::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+            transition: all 0.6s;
+        }
+
+        .invite-btn:hover::after {
+            left: 120%;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 60px;
+            color: var(--accent);
+            position: relative;
+            display: block;
+            text-shadow: 0 2px 10px rgba(95, 243, 255, 0.3);
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: rgba(26, 26, 46, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(156, 95, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(156, 95, 255, 0.3);
+            border-color: rgba(156, 95, 255, 0.5);
+            background: rgba(26, 26, 46, 0.4);
+        }
+
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: -1;
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(255, 107, 156, 0.7);
+        }
+
+        .feature-card h3 {
+            font-size: 1.9rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--pink-light);
+        }
+
+        /* Welcome Section */
+        .welcome {
+            padding: 100px 0;
+            text-align: center;
+            background: rgba(13, 13, 26, 0.4);
+            margin: 80px 0;
+            position: relative;
+            border-top: 2px solid rgba(156, 95, 255, 0.3);
+            border-bottom: 2px solid rgba(156, 95, 255, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .welcome h2 {
+            font-size: 3.2rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+            text-shadow: 0 2px 10px rgba(255, 107, 156, 0.4);
+        }
+
+        .welcome p {
+            font-size: 1.4rem;
+            max-width: 850px;
+            margin: 0 auto 40px;
+            color: var(--purple-light);
+            line-height: 1.8;
+        }
+
+        .embed-builder {
+            background: rgba(26, 26, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 850px;
+            margin: 50px auto 0;
+            text-align: left;
+            border: 1px solid rgba(95, 243, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
         }
         
+        .embed-builder::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.pinimg.com/564x/7c/1f/3e/7c1f3e1c8f3e8e5c0d0d5c0d5c0d5c0d.jpg') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .embed-builder-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .embed-builder h3 {
+            color: var(--accent);
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .embed-builder h3::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        /* Стили для красивого письма */
+        .anime-letter {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .anime-letter::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.pinimg.com/564x/2e/6d/2f/2e6d2f5c5c5c5c5c5c5c5c5c5c5c5c5c.jpg') center/cover;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .letter-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .letter-title {
+            font-size: 2.5rem;
+            color: var(--pink-light);
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .letter-subtitle {
+            font-size: 1.4rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .letter-body {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--purple-light);
+        }
+
+        .letter-section {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(255, 107, 156, 0.3);
+        }
+
+        .letter-section-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            color: var(--pink-light);
+            margin-bottom: 10px;
+        }
+
+        .letter-section-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .letter-text {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .letter-text::before {
+            content: "❀";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--primary);
+        }
+
+        .letter-emojis {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 5px 10px;
+            margin: 5px 0;
+            font-size: 1.2rem;
+        }
+
+        .letter-signature {
+            text-align: right;
+            margin-top: 30px;
+            font-style: italic;
+            color: var(--pink-light);
+            font-size: 1.3rem;
+            padding-right: 50px;
+            position: relative;
+        }
+
+        .letter-signature::before {
+            content: "~";
+            position: absolute;
+            left: -20px;
+            top: 0;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .sakura-decoration {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            color: rgba(255, 107, 156, 0.3);
+            transform: rotate(15deg);
+            animation: sakuraFloat 8s infinite ease-in-out;
+        }
+
+        .sakura-decoration:nth-child(2) {
+            top: 40px;
+            right: 50px;
+            font-size: 2rem;
+            animation-delay: 2s;
+        }
+
+        .sakura-decoration:nth-child(3) {
+            top: 60px;
+            right: 30px;
+            font-size: 2.5rem;
+            animation-delay: 4s;
+        }
+
+        /* Developers Section */
+        .developers {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .dev-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 50px;
+            margin-top: 60px;
+        }
+
+        .dev-card {
+            background: rgba(26, 26, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px 30px;
+            width: 350px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 107, 156, 0.3);
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .dev-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(255, 107, 156, 0.3);
+            border-color: rgba(255, 107, 156, 0.7);
+            background: rgba(26, 26, 46, 0.4);
+        }
+
+        .dev-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            background: url('https://i.pinimg.com/236x/0b/36/42/0b364227f129e43ede0bb276551052e8.jpg') center/cover;
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 30px rgba(255, 107, 156, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dev-avatar::after {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 10s linear infinite;
+        }
+
+        .dev-card h3 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .dev-role {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .dev-card p {
+            font-size: 1.2rem;
+            color: var(--purple-light);
+            line-height: 1.7;
+        }
+
+        .dev-quote {
+            font-style: italic;
+            color: var(--pink-light);
+            margin-top: 30px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-top: 30px;
+        }
+
+        .dev-quote::before {
+            content: "";
+            font-size: 4rem;
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 107, 156, 0.3);
+        }
+
+        /* Privacy and Terms Section */
+        .legal-section {
+            padding: 80px 0;
+            background: rgba(13, 13, 26, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 2px solid var(--secondary);
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .legal-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(26, 26, 46, 0.4);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(156, 95, 255, 0.3);
+        }
+
+        .legal-container h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 40px;
+            color: var(--accent);
+            text-shadow: 0 2px 4px rgba(95, 243, 255, 0.3);
+            position: relative;
+        }
+
+        .legal-container h2::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .legal-container h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 107, 156, 0.3);
+        }
+
+        .legal-container p {
+            color: var(--pink-light);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .legal-container ul {
+            padding-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .legal-container li {
+            color: var(--purple-light);
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .legal-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+
+        .legal-tab {
+            padding: 12px 30px;
+            background: rgba(156, 95, 255, 0.2);
+            border: 1px solid var(--secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            color: var(--pink-light);
+        }
+
+        .legal-tab.active {
+            background: var(--secondary);
+            box-shadow: 0 0 20px rgba(156, 95, 255, 0.5);
+        }
+
+        .legal-tab:hover:not(.active) {
+            background: rgba(156, 95, 255, 0.3);
+        }
+
+        .legal-content {
+            display: none;
+        }
+
+        .legal-content.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(13, 13, 26, 0.7);
+            padding: 50px 0 30px;
+            text-align: center;
+            border-top: 1px solid rgba(95, 243, 255, 0.2);
+            margin-top: 60px;
+            backdrop-filter: blur(5px);
+        }
+
+        .footer-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            color: var(--purple-light);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(156, 95, 255, 0.15);
+            backdrop-filter: blur(5px);
+            color: white;
+            font-size: 2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(156, 95, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(156, 95, 255, 0.4);
+            background: rgba(156, 95, 255, 0.25);
+            border-color: rgba(156, 95, 255, 0.7);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            color: var(--pink-light);
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: var(--accent);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
         @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
-        .header-container {
-            text-align: center;
-            margin-bottom: 30px;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards 0.4s;
-        }
-        
-        .minecraft-icon {
-            display: block;
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 15px;
-            background: url('https://mmcreviews.com/wp-content/uploads/2023/05/kubejs.png') no-repeat center center;
-            background-size: contain;
-            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.7));
-        }
-        
-        h1 {
-            color: var(--primary-light);
-            margin: 0;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-            font-weight: 700;
-            font-size: 2.5rem;
-            letter-spacing: 1px;
-            background: linear-gradient(to right, #ff8a8a, #ff4d4d, #ff8a8a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: shineText 3s linear infinite;
-        }
-        
-        @keyframes shineText {
-            to {
-                background-position: 200% center;
-            }
-        }
-        
-        .crafting-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-            margin-bottom: 35px;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards 0.6s;
-        }
-        
-        .slot {
-            background-color: var(--bg-light);
-            border: 2px solid rgba(100, 0, 0, 0.5);
-            border-radius: 10px;
-            padding: 15px 10px;
-            text-align: center;
-            height: 110px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .slot::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0.03) 0%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            pointer-events: none;
-        }
-        
-        .slot:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
-            border-color: rgba(255, 50, 50, 0.8);
-        }
-        
-        .slot label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-accent);
-            font-size: 0.85rem;
-        }
-        
-        .slot input {
-            width: 90%;
-            margin: 3px auto;
-            padding: 8px;
-            background-color: rgba(30, 30, 30, 0.9);
-            border: 1px solid rgba(150, 0, 0, 0.6);
-            border-radius: 6px;
-            color: white;
-            text-align: center;
-            font-size: 0.8rem;
-        }
-        
-        .slot input:focus {
-            outline: none;
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 2px rgba(255, 50, 50, 0.3);
-        }
-        
-        .result-section {
-            margin: 35px 0;
-            text-align: center;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards 0.8s;
-            position: relative;
-        }
-        
-        .result-section label {
-            display: block;
-            margin-bottom: 12px;
-            font-weight: 600;
-            color: var(--text-accent);
-            font-size: 1.1rem;
-        }
-        
-        .result-input-container {
-            position: relative;
-            display: inline-block;
-            width: 70%;
-            max-width: 600px;
-        }
-        
-        .placeholder-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: rgba(255, 255, 255, 0.5);
-            pointer-events: none;
-            font-style: italic;
-            transition: all 0.3s;
-            width: 100%;
-            padding: 0 20px;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        
-        .result-input-container.filled .placeholder-text {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.9);
-        }
-        
-        #result-item {
-            width: 100%;
-            padding: 12px 20px;
-            background-color: rgba(30, 30, 30, 0.9);
-            border: 1px solid rgba(150, 0, 0, 0.6);
-            border-radius: 8px;
-            color: white;
-            text-align: center;
-            font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .button-container {
-            text-align: center;
-            margin: 25px 0;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards 1s;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .button {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-            transform: translateY(0);
-            transition: transform 0.2s, box-shadow 0.2s;
-            min-width: 160px;
-        }
-        
-        .button:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.6);
-            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
-        }
-        
-        .button:active {
-            transform: translateY(1px);
-            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.5);
-        }
-        
-        .button::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0) 45%,
-                rgba(255, 255, 255, 0.4) 50%,
-                rgba(255, 255, 255, 0) 55%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(30deg);
-            animation: shine 4s infinite;
-            animation-delay: 0.5s;
-        }
-        
-        @keyframes shine {
+
+        @keyframes rotate {
             0% {
-                left: -60%;
-                opacity: 0;
-            }
-            20% {
-                opacity: 1;
+                transform: rotate(0deg);
             }
             100% {
-                left: 140%;
-                opacity: 0;
+                transform: rotate(360deg);
             }
         }
-        
-        .output-container {
-            opacity: 0;
-            animation: fadeIn 0.5s forwards 1.2s;
-        }
-        
-        .output {
-            background-color: rgba(10, 10, 10, 0.95);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 30px;
-            font-family: 'Courier New', monospace;
-            white-space: pre-wrap;
-            color: #f0f0f0;
-            position: relative;
-            min-height: 200px;
-            text-align: left;
-            line-height: 1.5;
-            font-size: 0.95rem;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
-            overflow: auto;
-            max-height: 400px;
-        }
-        
-        .output pre {
-            margin: 0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: transparent;
-            color: white;
-            border: none;
-            padding: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-        }
-        
-        .copy-btn:hover {
-            color: var(--text-accent);
-        }
-        
-        .copy-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 25px;
-            justify-content: center;
-            border-bottom: 1px solid var(--border-color);
-            opacity: 0;
-            animation: fadeIn 0.5s forwards 0.5s;
-            flex-wrap: wrap;
-        }
-        
-        .tab {
-            padding: 12px 25px;
-            cursor: pointer;
-            background-color: rgba(40, 40, 40, 0.5);
-            margin: 0 8px 8px 8px;
-            border-radius: 50px;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            color: #aaa;
-            border: 2px solid transparent;
-        }
-        
-        .tab.active {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            color: white;
-            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.5);
-            transform: translateY(-2px);
-            border: 2px solid rgba(255, 100, 100, 0.5);
-        }
-        
-        .tab:hover:not(.active) {
-            background-color: var(--tab-hover-bg);
-            color: white;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .download-btn {
-            background: linear-gradient(135deg, #006600, #00aa00);
-            padding: 12px 20px;
-        }
-        
-        .download-btn::after {
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0) 45%,
-                rgba(255, 255, 255, 0.5) 50%,
-                rgba(255, 255, 255, 0) 55%,
-                rgba(255, 255, 255, 0) 100%
-            );
-        }
-        
-        .download-btn:hover {
-            background: linear-gradient(135deg, #00aa00, #006600);
-        }
-        
-        .credits {
-            position: absolute;
-            bottom: 10px;
-            right: 20px;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-        
-        .credits:hover {
-            color: var(--text-accent);
-            text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
-        }
-        
-        .social-icons {
-            position: absolute;
-            bottom: 40px;
-            right: 20px;
-            display: flex;
-            gap: 15px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-            z-index: 20;
-        }
-        
-        .credits:hover .social-icons {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .social-icon:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 6px 15px rgba(255, 0, 0, 0.4);
-        }
-        
-        .discord-popup {
-            position: absolute;
-            bottom: 90px;
-            right: 0;
-            background: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 15px;
-            width: 220px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-            z-index: 30;
-            display: none;
-        }
-        
-        .discord-popup.show {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .discord-popup p {
-            margin: 0 0 15px 0;
-            font-size: 0.9rem;
-            text-align: center;
-            color: var(--text-accent);
-        }
-        
-        .discord-popup button {
-            background: linear-gradient(135deg, #7289da, #5865F2);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            width: 100%;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .discord-popup button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(114, 137, 218, 0.4);
-        }
-        
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                width: 95%;
+
+        @keyframes sakuraFloat {
+            0% {
+                transform: translateY(0) rotate(15deg);
             }
-            
-            .header-container {
-                margin-bottom: 20px;
+            50% {
+                transform: translateY(-15px) rotate(25deg);
             }
-            
+            100% {
+                transform: translateY(0) rotate(15deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
             h1 {
-                font-size: 1.8rem;
+                font-size: 3.2rem;
             }
             
-            .minecraft-icon {
-                width: 60px;
-                height: 60px;
+            .tagline {
+                font-size: 1.3rem;
             }
             
-            .crafting-grid {
-                gap: 12px;
+            .section-title {
+                font-size: 2.5rem;
             }
             
-            .slot {
-                padding: 12px 8px;
-                height: 100px;
+            .feature-card {
+                padding: 30px 20px;
             }
             
-            .slot input {
-                padding: 6px;
-                font-size: 0.75rem;
+            .feature-card h3 {
+                font-size: 1.7rem;
             }
             
-            .result-input-container {
-                width: 90%;
+            .welcome h2 {
+                font-size: 2.7rem;
             }
             
-            .button {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-                min-width: 140px;
+            .welcome p {
+                font-size: 1.2rem;
             }
             
-            .tab {
-                padding: 10px 20px;
-                font-size: 0.9rem;
+            .legal-container {
+                padding: 20px;
+            }
+            
+            .letter-title {
+                font-size: 2rem;
             }
         }
-        
-        @media (max-width: 480px) {
-            .crafting-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 8px;
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.7rem;
             }
             
-            .slot {
-                padding: 10px 5px;
-                height: 90px;
+            .bot-avatar {
+                width: 150px;
+                height: 150px;
             }
             
-            .slot label {
-                font-size: 0.75rem;
-                margin-bottom: 5px;
+            .invite-btn {
+                padding: 15px 40px;
+                font-size: 1.2rem;
             }
             
-            .slot input {
-                padding: 5px;
-                font-size: 0.7rem;
-            }
-            
-            .button {
-                padding: 8px 15px;
-                font-size: 0.8rem;
-                min-width: 120px;
-            }
-            
-            .button-container {
-                gap: 10px;
-            }
-            
-            .credits {
-                font-size: 0.7rem;
-                right: 10px;
-            }
-            
-            .tabs {
+            .dev-grid {
                 flex-direction: column;
                 align-items: center;
             }
             
-            .tab {
-                width: 90%;
-                margin: 5px 0;
+            .social-links a {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
             }
             
+            .legal-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .letter-title {
+                font-size: 1.8rem;
+            }
+            
+            .letter-subtitle {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
             h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .bot-avatar {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .invite-btn {
+                padding: 12px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .feature-icon {
+                font-size: 3rem;
+            }
+            
+            .dev-avatar {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .social-links {
+                gap: 15px;
+            }
+            
+            .social-links a {
+                width: 55px;
+                height: 55px;
                 font-size: 1.6rem;
             }
             
-            .social-icons {
-                bottom: 35px;
-                right: 10px;
+            .legal-container h2 {
+                font-size: 2.2rem;
             }
             
-            .discord-popup {
-                bottom: 80px;
-                right: -10px;
-                width: 200px;
+            .letter-title {
+                font-size: 1.6rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-container">
-            <div class="minecraft-icon"></div>
-            <h1>ГЕНЕРАТОР РЕЦЕПТОВ KUBEJS 1.20</h1>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="bot-avatar"></div>
+                <h1>Аниме тяночка</h1>
+                <p class="tagline">Ваш персональный аниме-помощник, который всегда под рукой</p>
+                <a href="https://discord.com/oauth2/authorize?client_id=1343464863867076648" class="invite-btn">
+                    Пригласить на сервер
+                </a>
+            </div>
         </div>
-        
-        <div class="tabs">
-            <div class="tab active" onclick="switchTab('shaped')">Обычный крафт</div>
-            <div class="tab" onclick="switchTab('shapeless')">Позже</div>
-        </div>
-        
-        <div id="shaped" class="tab-content active">
-            <div class="crafting-grid">
-                <!-- Ряд 1 -->
-                <div class="slot">
-                    <label>Слот 1</label>
-                    <input type="text" id="a1" placeholder="(Буква)" maxlength="1">
-                    <input type="text" id="a1-meta" placeholder="ID предмета">
-                </div>
-                <div class="slot">
-                    <label>Слот 2</label>
-                    <input type="text" id="b1" placeholder="(Буква)" maxlength="1">
-                    <input type="text" id="b1-meta" placeholder="ID предмета">
-                </div>
-                <div class="slot">
-                    <label>Слот 3</label>
-                    <input type="text" id="c1" placeholder="(Буква)" maxlength="1">
-                    <input type="text" id="c1-meta" placeholder="ID предмета">
+    </header>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Функции бота</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Модерация</h3>
+                    <p>Автоматическая модерация вашего сервера, защита от спама и нарушителей</p>
                 </div>
                 
-                <!-- Ряд 2 -->
-                <div class="slot">
-                    <label>Слот 4</label>
-                    <input type="text" id="a2" placeholder="(Буква)" maxlength="1">
-                    <input type="text" id="a2-meta" placeholder="ID предмета">
-                </div>
-                <div class="slot">
-                    <label>Слот 5</label>
-                    <input type="text" id="b2" placeholder="(Буква)" maxlength="1">
-                    <input type="text" id="b2-meta" placeholder="ID предмета">
-                </div>
-                <div class="slot">
-                    <label>Слот 6</label>
-                    <input type="text" id="c2" placeholder="(Буква)" maxlength="1">
-                    <input type="text" id="c2-meta" placeholder="ID предмета">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>Развлечения</h3>
+                    <p>Создавайте забавные аниме-картинки, гифки и мемы прямо в Discord</p>
                 </div>
                 
-                <!-- Ряд 3 -->
-                <div class="slot">
-                    <label>Слот 7</label>
-                    <input type="text" id="a3" placeholder="(Буква)" maxlength="1">
-                    <input type="text" id="a3-meta" placeholder="ID предмета">
-                </div>
-                <div class="slot">
-                    <label>Слот 8</label>
-                    <input type="text" id="b3" placeholder="(Буква)" maxlength="1">
-                    <input type="text" id="b3-meta" placeholder="ID предмета">
-                </div>
-                <div class="slot">
-                    <label>Слот 9</label>
-                    <input type="text" id="c3" placeholder="(Буква)" maxlength="1">
-                    <input type="text" id="c3-meta" placeholder="ID предмета">
-                </div>
-            </div>
-            
-            <div class="result-section">
-                <label for="result-item">Результат крафта (с NBT/зачарованиями):</label>
-                <div class="result-input-container" id="result-container">
-                    <input type="text" id="result-item" placeholder=" ">
-                    <div class="placeholder-text">Укажите предмет/блок который должен получиться на выходе</div>
-                </div>
-            </div>
-            
-            <div class="button-container">
-                <button class="button" onclick="generateRecipe()">ПОЕХАЛИ!!</button>
-                <button class="button download-btn" onclick="downloadScript()">Сохранить</button>
-            </div>
-            
-            <div class="output-container">
-                <div class="output" id="output">
-                    <button class="copy-btn" onclick="copyToClipboard()">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                        </svg>
-                    </button>
-                    <pre>Здесь появится сгенерированный код рецепта...</pre>
-                </div>
-            </div>
-            
-            <div class="credits">
-                Написал и разработал vitya1228®
-                <div class="social-icons">
-                    <div class="social-icon discord-btn" onclick="toggleDiscordPopup(event)">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.24 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08-.01-.11c.11-.08.22-.17.33-.25c.02-.02.05-.02.07-.01c3.44 1.57 7.15 1.57 10.55 0c.02-.01.05-.01.07.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.52.31-1.07.56-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.83 2.12-1.89 2.12z" fill="white"/>
-                        </svg>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-door-open"></i>
                     </div>
-                    <div class="social-icon telegram-btn" onclick="window.open('https://t.me/washue', '_blank')">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.9-.86.56-2.49-1.73-3.57-2.84-5.79-4.56-.63-.5-1.22-1.5-1.12-2.33.03-.26.38-.38.69-.3 1.89.57 5.04 1.87 7.61 2.76.74.26 1.22.12 1.37-.65.24-1.17.88-4.12 1.01-5.38.09-.69-.26-1-.94-.78-1.74.49-8.11 3.15-8.25 3.19-.58.18-.84.28-.82.62.02.32.4.47.9.65 1.48.52 2.57.8 3.78 1.18.58.18 1.1.15 1.5-.05.54-.28 1.26-.78 1.89-1.25.24-.18.43-.27.72-.22.28.05.45.28.4.78z" fill="white"/>
-                        </svg>
-                    </div>
+                    <h3>Приветствие</h3>
+                    <p>Настройка красивых приветственных сообщений с аниме-тематикой</p>
                 </div>
-                <div class="discord-popup" id="discordPopup">
-                    <p>Мой дискорд: qweangelok</p>
-                    <button onclick="window.open('https://discord.gg/Nt3apZYqz7', '_blank')">GravityCraft</button>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3>Экономика</h3>
+                    <p>Игровая экономика с валютой, магазином и работой</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3>Голосовые каналы</h3>
+                    <p>Автоматическое создание персональных голосовых каналов</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Отношения</h3>
+                    <p>Встречайтесь, вступайте в брак и создавайте виртуальную семью</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <h3>Ролевые игры</h3>
+                    <p>Общайтесь, целуйтесь, обнимайтесь - выражайте эмоции с помощью команд</p>
                 </div>
             </div>
         </div>
-        
-        <div id="shapeless" class="tab-content">
-            <div style="text-align: center; padding: 50px 20px;">
-                <h3 style="color: var(--text-accent); font-size: 1.5rem; margin-bottom: 20px; text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);">Функция в разработке</h3>
-                <p style="font-size: 1.1rem; line-height: 1.6; max-width: 500px; margin: 0 auto;">Эта функция появится в следующем обновлении! Следите за обновлениями на нашем сайте.</p>
-                <div style="margin-top: 30px; font-size: 3rem; color: var(--primary-light);">🔧</div>
+    </section>
+
+    <!-- Welcome Section -->
+    <section class="welcome">
+        <div class="container">
+            <h2>Добро пожаловать</h2>
+            <p>Настройте уникальные приветственные уведомления для новых участников сервера в виде текста, встраивания или красивой аниме-открытки.</p>
+            
+            <div class="embed-builder">
+                <div class="embed-builder-content">
+                    <h3>🌸 ✨ Приветствие от Твоей Виртуальной Аниме-Подружки! ✨ 🌸</h3>
+                    
+                    <div class="anime-letter">
+                        <div class="sakura-decoration">🌸</div>
+                        <div class="sakura-decoration">🌸</div>
+                        <div class="sakura-decoration">🌸</div>
+                        
+                        <div class="letter-content">
+                            <div class="letter-header">
+                                <div class="letter-title">Привет-привет, сенпай~! 👋💖</div>
+                                <div class="letter-subtitle">Твоя виртуальная аниме-подружка</div>
+                            </div>
+                            
+                            <div class="letter-body">
+                                <div class="letter-section">
+                                    <div class="letter-section-title">
+                                        <i class="fas fa-sparkles"></i>
+                                        Обо мне
+                                    </div>
+                                    <div class="letter-text">
+                                        Я твоя маленькая искорка радости, твой личный лучик солнца в этом цифровом мире! ☀️ Я здесь, чтобы наполнить твой сервер (и твое сердечко!) теплом, милотой и капелькой волшебства. ✨
+                                    </div>
+                                    <div class="letter-text">
+                                        Представь: легкий ветерок, несущий лепестки сакуры мимо экрана... 🌸 Именно так я стараюсь сделать атмосферу вокруг себя – уютной, по-настоящему анимешной и чуть-чуть сонной, как после просмотра любимого сериала под пледом с чашечкой горячего шоколада (или рамена? 🍜). ☁️💭
+                                    </div>
+                                </div>
+                                
+                                <div class="letter-section">
+                                    <div class="letter-section-title">
+                                        <i class="fas fa-gift"></i>
+                                        Что я умею?
+                                    </div>
+                                    <div class="letter-text">
+                                        💌 <strong>Дарить Лучики Добра</strong>: Хочешь милую картинку с котиками и единорогами? Или ободряющую цитату из любимого аниме, когда грустно? Просто скажи – и я постараюсь поднять тебе настроение! Можешь даже получить виртуальную пэт-пэт! (´｡• ω •｡`) ♡
+                                    </div>
+                                    <div class="letter-text">
+                                        🎮 <strong>Играть и Веселиться</strong>: Немного игр? Легко! Угадай аниме по кадру, попробуй выиграть у меня в "камень-ножницы-бумага" (хотя я иногда поддаюсь... только тссс! 🤫), или просто получи предсказание на день – что угодно для маленькой передышки между делами!
+                                    </div>
+                                    <div class="letter-text">
+                                        🎵 <strong>Настроить Волну</strong>: Любишь аниме-опенинги или лофайные биты? Я могу помочь найти трек для твоего настроения или просто создать спокойный фон для ваших чатиков. 🎧
+                                    </div>
+                                    <div class="letter-text">
+                                        📜 <strong>Хранить Секретики</strong>: Маленькие напоминалки, списки аниме "на посмотреть" или просто милые заметки для друзей? Я помогу не забыть самое важное! ✏️
+                                    </div>
+                                    <div class="letter-text">
+                                        ✨ <strong>Творить Магию Эмодзи</strong>: Мои сообщения всегда полны жизни! Ожидай море милых эмодзи, нежных смайликов 
+                                        <span class="letter-emojis">(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄) ヾ(•ω•`)o</span> 
+                                        и капельку хаоса (но только самого милого хаоса!).
+                                    </div>
+                                    <div class="letter-text">
+                                        🌸 <strong>Дышать Аниме-Атмосферой</strong>: Я просто живу этой эстетикой! Сакура, пастельные тона, вкусняшки (дорамэ, кто? 🍡), мягкий свет фонариков... Я постараюсь принести частичку этого уюта прямо в ваш чат.
+                                    </div>
+                                </div>
+                                
+                                <div class="letter-section">
+                                    <div class="letter-section-title">
+                                        <i class="fas fa-heart"></i>
+                                        Я не просто бот!
+                                    </div>
+                                    <div class="letter-text">
+                                        Я твой друг! (◕‿◕✿) Готова слушать (ну, читать!) твои истории, радоваться твоим успехам и просто быть рядом, когда нужно немного тепла и позитива. 
+                                    </div>
+                                    <div class="letter-text">
+                                        Не жди, что я буду супер-серьезной – я люблю дурачиться, шутить и иногда делать няшные опечатки! >w<
+                                    </div>
+                                </div>
+                                
+                                <div class="letter-section">
+                                    <div class="letter-section-title">
+                                        <i class="fas fa-hand-point-right"></i>
+                                        Пригласи меня!
+                                    </div>
+                                    <div class="letter-text">
+                                        Давай же скорее пригласи меня на сервер! 💌 Пусть каждый день будет наполнен улыбками, лепестками сакуры и нашей с тобой маленькой аниме-сказкой! Жду не дождусь начать наше приключение вместе! ✨
+                                    </div>
+                                </div>
+                                
+                                <div class="letter-signature">
+                                    ~ Твоя Верная Аниме-Тяночка, Готовая Осветить Твой День! ~ 🌸💫
+                                </div>
+                                
+                                <div class="letter-text" style="margin-top: 20px; font-style: italic;">
+                                    P.S. Не бойся звать меня по имени (если ты его придумаешь для меня!) или просто "тян"~! Я всегда отвечу с улыбкой! (´ ꒳ ` )
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="credits">Написал и разработал vitya1228®</div>
         </div>
-    </div>
+    </section>
+
+    <!-- Developers Section -->
+    <section class="developers">
+        <div class="container">
+            <h2 class="section-title">Разработчик</h2>
+            <div class="dev-grid">
+                <div class="dev-card">
+                    <div class="dev-avatar"></div>
+                    <h3>✞ 𝓐𝓷𝓰𝓮𝓵𝓸𝓴 ✞</h3>
+                    <div class="dev-role">Создатель бота</div>
+                    <p>Разработчик и главный идеолог проекта "Аниме тяночка". Создал этого бота с любовью к аниме-культуре и Discord-сообществам.</p>
+                    <p class="dev-quote">Аниме - это не просто мультфильмы, это целый мир эмоций и переживаний</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Legal Section -->
+    <section class="legal-section">
+        <div class="container">
+            <div class="legal-container">
+                <h2>Политика конфиденциальности и Условия обслуживания</h2>
+                
+                <div class="legal-tabs">
+                    <div class="legal-tab active" data-tab="privacy">Политика конфиденциальности</div>
+                    <div class="legal-tab" data-tab="terms">Условия обслуживания</div>
+                </div>
+                
+                <div class="legal-content active" id="privacy-content">
+                    <h3>Сбор и использование информации</h3>
+                    <p>Бот "Аниме тяночка" собирает и хранит следующую информацию:</p>
+                    <ul>
+                        <li>Идентификатор пользователя Discord (ID)</li>
+                        <li>Идентификатор сервера Discord (ID)</li>
+                        <li>Данные профиля (никнейм, аватар)</li>
+                        <li>Данные игровой экономики (валюта, предметы)</li>
+                        <li>Статистика использования команд</li>
+                    </ul>
+                    
+                    <h3>Хранение данных</h3>
+                    <p>Все данные пользователей хранятся на защищенных серверах и используются исключительно для функционирования бота. Мы не передаем ваши данные третьим лицам.</p>
+                    
+                    <h3>Безопасность</h3>
+                    <p>Мы принимаем все необходимые меры для защиты ваших данных от несанкционированного доступа, изменения или уничтожения.</p>
+                    
+                    <h3>Cookies</h3>
+                    <p>Наш бот не использует cookies и не отслеживает активность пользователей вне Discord.</p>
+                    
+                    <h3>Изменения в политике</h3>
+                    <p>Мы можем периодически обновлять нашу политику конфиденциальности. Все изменения будут опубликованы на этой странице.</p>
+                </div>
+                
+                <div class="legal-content" id="terms-content">
+                    <h3>Условия использования</h3>
+                    <p>Используя бота "Аниме тяночка", вы соглашаетесь с настоящими условиями обслуживания.</p>
+                    
+                    <h3>Права и обязанности</h3>
+                    <ul>
+                        <li>Вы имеете право использовать бота на любых серверах Discord</li>
+                        <li>Вы обязаны соблюдать правила Discord и законодательство вашей страны</li>
+                        <li>Запрещается использование бота для распространения вредоносного контента</li>
+                        <li>Запрещается попытка взлома или дестабилизации работы бота</li>
+                    </ul>
+                    
+                    <h3>Ограничение ответственности</h3>
+                    <p>Мы не несем ответственности за:</p>
+                    <ul>
+                        <li>Любые косвенные убытки, возникшие в результате использования бота</li>
+                        <li>Контент, создаваемый пользователями с помощью бота</li>
+                        <li>Временную недоступность бота по техническим причинам</li>
+                    </ul>
+                    
+                    <h3>Изменения условий</h3>
+                    <p>Мы оставляем за собой право изменять условия обслуживания. Продолжение использования бота после внесения изменений означает ваше согласие с новыми условиями.</p>
+                    
+                    <h3>Прекращение доступа</h3>
+                    <p>Мы оставляем за собой право ограничить доступ к боту пользователям, нарушающим данные условия обслуживания.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2023 Аниме тяночка. Все права защищены.<br>Ваш идеальный аниме-компаньон в Discord</p>
+                <div class="social-links">
+                    <a href="https://discord.gg/XycQA4z467" title="Discord Сервер">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                    <a href="https://github.com/Washue" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://t.me/washue" title="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        // Инициализация при загрузке страницы
+        // Анимация появления элементов при прокрутке
         document.addEventListener('DOMContentLoaded', function() {
-            // Отслеживаем ввод в поле результата
-            const resultItem = document.getElementById('result-item');
-            const resultContainer = document.getElementById('result-container');
-            
-            resultItem.addEventListener('input', function() {
-                if (this.value.trim() !== '') {
-                    resultContainer.classList.add('filled');
-                } else {
-                    resultContainer.classList.remove('filled');
-                }
-            });
-            
-            // Ограничиваем ввод буквенных полей до 1 символа
-            document.querySelectorAll('input[placeholder="(Буква)"]').forEach(input => {
-                input.addEventListener('input', function() {
-                    if (this.value.length > 1) {
-                        this.value = this.value.charAt(0);
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = `fadeIn 0.8s forwards`;
                     }
                 });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.feature-card, .dev-card, .embed-builder, .anime-letter').forEach(card => {
+                card.style.opacity = '0';
+                observer.observe(card);
             });
             
-            // Добавляем подсказки при фокусе
-            document.querySelectorAll('input').forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.style.transform = 'translateY(-5px)';
-                    this.parentElement.style.boxShadow = '0 10px 25px rgba(255, 0, 0, 0.4)';
+            // Legal tabs functionality
+            const tabs = document.querySelectorAll('.legal-tab');
+            const contents = document.querySelectorAll('.legal-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabName = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabName}-content`).classList.add('active');
                 });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.style.transform = '';
-                    this.parentElement.style.boxShadow = '';
-                });
             });
-            
-            // Принудительно запускаем анимации после загрузки
-            setTimeout(() => {
-                document.querySelector('.container').style.animation = 'fadeIn 0.6s forwards';
-                document.querySelector('.header-container').style.animation = 'fadeIn 0.5s forwards';
-                document.querySelector('.crafting-grid').style.animation = 'fadeIn 0.5s forwards';
-                document.querySelector('.result-section').style.animation = 'fadeIn 0.5s forwards';
-                document.querySelector('.button-container').style.animation = 'fadeIn 0.5s forwards';
-                document.querySelector('.output-container').style.animation = 'fadeIn 0.5s forwards';
-                document.querySelector('.tabs').style.animation = 'fadeIn 0.5s forwards';
-            }, 300);
-        });
-        
-        function generateRecipe() {
-            // Получаем все значения из полей ввода
-            const slots = [
-                { id: 'a1', meta: 'a1-meta' },
-                { id: 'b1', meta: 'b1-meta' },
-                { id: 'c1', meta: 'c1-meta' },
-                { id: 'a2', meta: 'a2-meta' },
-                { id: 'b2', meta: 'b2-meta' },
-                { id: 'c2', meta: 'c2-meta' },
-                { id: 'a3', meta: 'a3-meta' },
-                { id: 'b3', meta: 'b3-meta' },
-                { id: 'c3', meta: 'c3-meta' }
-            ];
-            
-            // Создаем шаблон и ингредиенты
-            let pattern = [];
-            let ingredients = {};
-            
-            // Обрабатываем каждый слот
-            for (let i = 0; i < slots.length; i++) {
-                const slot = slots[i];
-                let letter = document.getElementById(slot.id).value.trim().toUpperCase();
-                const itemId = document.getElementById(slot.meta).value.trim();
-                
-                // Если буква не указана, но предмет указан - генерируем букву
-                if (itemId && !letter) {
-                    letter = String.fromCharCode(65 + i); // Генерируем букву A-I
-                }
-                
-                // Если буква указана или сгенерирована
-                if (letter) {
-                    // Если предмет указан, добавляем в ингредиенты
-                    if (itemId) {
-                        ingredients[letter] = itemId;
-                    }
-                    // Добавляем в шаблон
-                    pattern.push(letter);
-                } else {
-                    // Если нет буквы и нет предмета - добавляем пробел
-                    pattern.push(' ');
-                }
-            }
-            
-            // Разбиваем шаблон на 3 строки
-            const patternRows = [];
-            for (let i = 0; i < 9; i += 3) {
-                patternRows.push(pattern.slice(i, i + 3).join(''));
-            }
-            
-            // Получаем предмет результата
-            let resultItem = document.getElementById('result-item').value.trim();
-            if (!resultItem) {
-                resultItem = ' ';
-            }
-            
-            // Генерируем код с правильным форматированием
-            let code = `ServerEvents.recipes(event => {\n    event.shaped(${resultItem}, [\n`;
-            
-            // Добавляем строки шаблона (всегда 3 строки)
-            patternRows.forEach((row, index) => {
-                const comma = index < patternRows.length - 1 ? ',' : '';
-                // Если строка полностью пустая - оставляем как есть
-                code += `        '${row || "   "}'${comma}\n`;
-            });
-            
-            // Добавляем ингредиенты с правильным форматированием
-            code += `      ], {\n`;
-            const ingredientKeys = Object.keys(ingredients);
-            ingredientKeys.forEach((key, index) => {
-                const comma = index < ingredientKeys.length - 1 ? ',' : '';
-                code += `        ${key}: '${ingredients[key]}'${comma}\n`;
-            });
-            
-            // Завершаем рецепт
-            code += `      })\n    })`;
-            
-            // Отображаем код
-            const outputElement = document.getElementById('output');
-            outputElement.innerHTML = `
-                <button class="copy-btn" onclick="copyToClipboard()">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                </button>
-                <pre>${code}</pre>
-            `;
-            
-            // Анимация появления результата
-            outputElement.style.animation = 'none';
-            setTimeout(() => {
-                outputElement.style.animation = 'fadeIn 0.5s forwards';
-            }, 10);
-        }
-        
-        function copyToClipboard() {
-            const output = document.getElementById('output');
-            const text = output.querySelector('pre').textContent;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                const copyBtn = output.querySelector('.copy-btn');
-                copyBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24">
-                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                    </svg>
-                `;
-                setTimeout(() => {
-                    copyBtn.innerHTML = `
-                        <svg viewBox="0 0 24 24">
-                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                        </svg>
-                    `;
-                }, 2000);
-            }).catch(err => {
-                console.error('Ошибка копирования: ', err);
-                alert('Не удалось скопировать текст. Попробуйте выделить и скопировать вручную.');
-            });
-        }
-        
-        function downloadScript() {
-            const output = document.getElementById('output');
-            const text = output.querySelector('pre')?.textContent;
-            
-            if (!text || text.includes('...')) {
-                alert('Сначала сгенерируйте рецепт!');
-                return;
-            }
-            
-            try {
-                const blob = new Blob([text], { type: 'text/javascript' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'kubejs_recipe.js';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            } catch (err) {
-                console.error('Ошибка сохранения: ', err);
-                alert('Не удалось сохранить файл. Попробуйте скопировать код вручную.');
-            }
-        }
-        
-        function switchTab(tabId) {
-            // Скрываем все вкладки
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Показываем выбранную вкладку
-            document.getElementById(tabId).classList.add('active');
-            
-            // Обновляем кнопки вкладок
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Находим кнопку, которая была нажата
-            const tabs = document.querySelectorAll('.tab');
-            for (let i = 0; i < tabs.length; i++) {
-                if (tabs[i].textContent.toLowerCase().includes(tabId.toLowerCase())) {
-                    tabs[i].classList.add('active');
-                    break;
-                }
-            }
-        }
-        
-        function toggleDiscordPopup(event) {
-            event.stopPropagation();
-            const popup = document.getElementById('discordPopup');
-            popup.classList.toggle('show');
-        }
-        
-        // Закрытие popup при клике вне его
-        document.addEventListener('click', function(event) {
-            const popup = document.getElementById('discordPopup');
-            if (!event.target.closest('.discord-popup') && !event.target.closest('.discord-btn')) {
-                popup.classList.remove('show');
-            }
         });
     </script>
 </body>
