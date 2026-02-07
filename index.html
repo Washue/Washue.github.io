@@ -3,314 +3,39 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Промт-инженер — Angelok</title>
+  <title id="page-title">Промт-инженер — Angelok</title>
   <meta name="description" content="Специалист по промт-инжинирингу: создаю сложные промты для нейросетей, сайтов, постов и креативных проектов." />
   <link rel="icon" href="https://i.pinimg.com/736x/fe/7f/42/fe7f420fff6b113e1ab6188ab638ecf9.jpg" type="image/jpeg">
   <link rel="apple-touch-icon" href="https://i.pinimg.com/736x/fe/7f/42/fe7f420fff6b113e1ab6188ab638ecf9.jpg">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg1: #0f1724;
-      --bg2: #1b0836;
-      --accent1: #9d4edd;
-      --accent2: #c77dff;
-      --accent3: #e0aaff;
-      --card: rgba(255,255,255,0.04);
-      --glass: rgba(255,255,255,0.08);
-      --text: #e6eef8;
-      --muted: #a9b6c8;
-      --radius: 16px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: url('https://img1.akspic.ru/crops/5/4/0/4/7/174045/174045-anime-anime_art-siluet-zhivopis-atmosfera-3840x2160.png') no-repeat center center fixed,
-                  radial-gradient(1200px 600px at 10% 10%, rgba(127,34,255,0.12), transparent),
-                  radial-gradient(1000px 450px at 90% 90%, rgba(122,255,255,0.06), transparent),
-                  linear-gradient(180deg,var(--bg1),var(--bg2));
-      background-size: cover;
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      padding:32px;
-    }
-
-    .container{
-      max-width:1100px;
-      margin:0 auto;
-      display:grid;
-      grid-template-columns: 360px 1fr;
-      gap:28px;
-      align-items:start;
-    }
-
-    .sidebar{
-      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow: 0 6px 30px rgba(2,6,23,0.8);
-      position:sticky;
-      top:32px;
-      min-height:240px;
-      border:1px solid rgba(255,255,255,0.10);
-      backdrop-filter: blur(10px);
-      text-align:center;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-    }
-    .avatar-container{
-      width:180px;
-      height:180px;
-      margin-bottom:18px;
-    }
-    .avatar-img{
-      width:100%;
-      height:100%;
-      border-radius:50%;
-      object-fit:cover;
-      border:4px solid var(--accent1);
-      box-shadow:0 0 25px rgba(157, 78, 221, 0.4);
-    }
-    .sidebar h1{
-      margin:0 0 6px 0;
-      font-family:"Zen Dots";
-      font-size:28px;
-      letter-spacing:0.6px;
-      text-align:center;
-    }
-    .sidebar .role{
-      color:var(--accent2);
-      font-size:15px;
-      font-weight:600;
-      margin-bottom:20px;
-      text-align:center;
-    }
-
-    .info-block{
-      width:100%;
-      margin-bottom:14px;
-    }
-    .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-    .chip{
-      background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      padding:8px 10px;border-radius:999px;color:var(--muted);font-size:13px;
-      border:1px solid rgba(255,255,255,0.10)
-    }
-
-    .main{
-      min-height:400px;
-    }
-
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-      border-radius:12px;
-      padding:18px;
-      margin-bottom:20px;
-      box-shadow: 0 6px 24px rgba(5,8,20,0.6);
-      border:1px solid rgba(255,255,255,0.10);
-      backdrop-filter: blur(10px);
-    }
-
-    h2{
-      margin:0 0 10px 0;
-      font-size:20px;
-      background: linear-gradient(90deg, var(--accent1), var(--accent2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    p.lead{color:var(--muted);margin-top:6px;font-size:14px;line-height:1.5}
-
-    .prompts{display:flex;flex-direction:column;gap:14px}
-    .prompt-container{
-      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.10);
-      transition: transform 0.2s ease;
-    }
-    .prompt-container:hover {
-      transform: translateY(-2px);
-      background:linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-    }
-    .prompt-header{
-      display:flex;justify-content:center;align-items:center;margin-bottom:10px;
-    }
-    .prompt-title{
-      font-size:14px;color:var(--accent3);font-weight:600;text-align:center;
-      background: linear-gradient(90deg, var(--accent1), var(--accent2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-weight: 700;
-    }
-    .prompt{
-      background:rgba(0,0,0,0.3);
-      padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
-      font-size:13px;color:#e0e0ff;white-space:pre-wrap;margin-bottom:10px;
-      line-height:1.4;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-    .prompt:hover {
-      background:rgba(0,0,0,0.4);
-      border-color: rgba(199, 125, 255, 0.3);
-    }
-    .prompt:active {
-      transform: scale(0.99);
-    }
-    .prompt::after {
-      content: "Скопировать?";
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      font-size: 11px;
-      color: var(--accent3);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      font-family: "Inter", sans-serif;
-    }
-    .prompt:hover::after {
-      opacity: 1;
-    }
-    .prompt-copied {
-      background: rgba(157, 78, 221, 0.15) !important;
-      border-color: var(--accent2) !important;
-    }
-    .prompt-explanation{
-      font-size:12px;color:var(--muted);padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);
-      line-height:1.5;
-    }
-    .prompt-tags {
-      display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;justify-content:center;
-    }
-    .prompt-tag {
-      background:rgba(157, 78, 221, 0.15);color:var(--accent3);padding:4px 8px;border-radius:6px;
-      font-size:11px;font-weight:600;
-    }
-
-    .anime-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
-      gap:20px;
-      margin-top:12px;
-    }
-    .anime-card{
-      border-radius:12px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.15));
-      display:flex;flex-direction:column;height:100%;
-      border:1px solid rgba(255,255,255,0.12);
-      overflow: hidden;
-      transition:transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-    }
-    .anime-card:hover{
-      transform:translateY(-6px);
-      box-shadow:0 15px 30px rgba(0,0,0,0.4);
-    }
-    .anime-image{
-      height:180px;
-      width:100%;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-    }
-    .anime-image-overlay{
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(transparent, rgba(0,0,0,0.8));
-      height: 60px;
-    }
-    .anime-body{
-      padding:16px;
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      position: relative;
-      z-index: 2;
-    }
-    .anime-title{
-      font-weight:600;font-size:16px;margin-bottom:4px;
-      text-align:center;
-      background: linear-gradient(90deg, var(--accent1), var(--accent2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-family: "Zen Dots", sans-serif;
-      letter-spacing: 0.5px;
-    }
-    .anime-meta{
-      display:flex;justify-content:space-between;align-items:center;
-      font-size:12px;color:var(--muted);
-    }
-    .anime-score{
-      font-weight:700;color:var(--accent1);font-size:14px;
-      background: rgba(0,0,0,0.3);
-      padding: 2px 8px;
-      border-radius: 12px;
-    }
-    .anime-genres{
-      display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;justify-content:center;
-    }
-    .anime-genre{
-      background:rgba(157, 78, 221, 0.2);color:var(--accent3);padding:4px 8px;
-      border-radius:6px;font-size:11px;font-weight:600;
-      border: 1px solid rgba(157, 78, 221, 0.3);
-    }
-    .anime-desc{
-      font-size:13px;color:var(--muted);line-height:1.5;
-      display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;
-      overflow:hidden;
-      margin-top: auto;
-    }
-
-    .skill-viz{
-      display:flex;flex-direction:column;gap:10px;margin-top:15px;
-    }
-    .skill-item{
-      display:flex;justify-content:space-between;align-items:center;
-    }
-    .skill-name{font-size:13px}
-    .skill-bar{
-      width:60%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;
-    }
-    .skill-fill{
-      height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:3px;
-    }
-
-    footer{margin-top:28px;color:var(--muted);font-size:13px;text-align:center}
-    @media(max-width:980px){
-      .container{grid-template-columns:1fr; padding-bottom:40px}
-      body{padding:16px}
-      .anime-grid{grid-template-columns: repeat(auto-fill, minmax(280px,1fr))}
-    }
-    @media(max-width:600px){
-      .anime-grid{grid-template-columns:1fr}
-      .anime-image{height:160px}
-    }
-  </style>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
+  <!-- Кнопки переключения языка -->
+  <div class="language-switcher">
+    <button class="lang-btn active" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="de">DE</button>
+    <button class="lang-btn" data-lang="ja">日本語</button>
+    <button class="lang-btn" data-lang="zh">中文</button>
+  </div>
+
   <div class="container">
     <aside class="sidebar card">
       <div class="avatar-container">
         <img src="https://i.pinimg.com/736x/fe/7f/42/fe7f420fff6b113e1ab6188ab638ecf9.jpg" alt="Angelok" class="avatar-img">
       </div>
-      <h1>Angelok</h1>
-      <div class="role">Промт-инженер & Аниме-энтузиаст</div>
+      <h1 id="name">Angelok</h1>
+      <div id="role" class="role">Промт-инженер & Аниме-энтузиаст</div>
 
       <div class="info-block">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <strong>Навыки</strong>
-          <span style="font-size:12px; color:var(--muted)">Опыт: 3+ года</span>
+          <span id="skills-title">Навыки</span>
+          <span id="experience" style="font-size:12px; color:var(--muted)">Опыт: 3+ года</span>
         </div>
         <div class="skill-viz">
           <div class="skill-item">
@@ -322,7 +47,7 @@
             <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
           </div>
           <div class="skill-item">
-            <span class="skill-name">Аниме-стилизация</span>
+            <span id="anime-stylization" class="skill-name">Аниме-стилизация</span>
             <div class="skill-bar"><div class="skill-fill" style="width:98%"></div></div>
           </div>
           <div class="skill-item">
@@ -333,7 +58,7 @@
       </div>
 
       <div class="info-block">
-        <strong>Контакты</strong>
+        <span id="contacts-title">Контакты</span>
         <div style="margin-top:8px; font-size:13px; color:var(--muted)">
           <div>Discord: @qweangelok</div>
           <div>Telegram: @ztcqidxx</div>
@@ -343,118 +68,30 @@
 
     <main class="main">
       <section class="card">
-        <h2>Обо мне</h2>
-        <p class="lead">
+        <h2 id="about-title">Обо мне</h2>
+        <p id="about-text1" class="lead">
           Я — специалист по промт-инжинирингу с широким профилем работ. Моя деятельность включает создание сложных промтов для генерации аниме-артов в нейросетях, разработку текстового контента для сайтов и постов, а также генерацию креативных идей для различных проектов.
         </p>
-        <p class="lead">
+        <p id="about-text2" class="lead">
           Экспериментирую с архитектурой нейросетей, весами, комбинациями стилей и параметрами моделей для достижения нужного результата — будь то визуальные образы, текстовый контент или комплексные решения. Мой подход — глубокое понимание механизмов работы AI и создание точных, детализированных промтов, которые превращают абстрактные концепции в качественный конечный продукт.
         </p>
       </section>
 
       <section class="card">
         <div>
-          <h2>Коллекция промтов</h2>
-          <p class="lead">Нажмите на любой промт, чтобы скопировать его в буфер обмена.</p>
+          <h2 id="prompts-title">Коллекция промтов</h2>
+          <p id="prompts-desc" class="lead">Нажмите на любой промт, чтобы скопировать его в буфер обмена.</p>
         </div>
 
         <div class="prompts" id="prompts">
-          <!-- Промт 1 -->
-          <div class="prompt-container">
-            <div class="prompt-header">
-              <div class="prompt-title">Атмосферный киберпанк</div>
-            </div>
-            <div class="prompt" data-raw="cinematic shot, cyberpunk street at night, raining, neon signs in japanese, reflective wet asphalt, a lone figure with holographic umbrella, deep shadows, volumetric fog, shot on cinematic camera, 35mm, anamorphic lens flare, masterpiece, 8k --ar 21:9 --v 6.0 --style raw">
-cinematic shot, cyberpunk street at night, raining, neon signs in japanese, reflective wet asphalt, a lone figure with holographic umbrella, deep shadows, volumetric fog, shot on cinematic camera, 35mm, anamorphic lens flare, masterpiece, 8k --ar 21:9 --v 6.0 --style raw
-            </div>
-            <div class="prompt-explanation">
-              <strong>Анализ:</strong> Промт начинается с определения типа кадра (cinematic shot), затем задаёт сцену, погоду и ключевые детали (неоновые вывески, мокрая дорога). Фигура с зонтом — смысловой центр. Далее идут параметры, влияющие на качество и атмосферу: глубина теней, объёмный туман, имитация съёмки на кинокамеру с анаморфным бликом. Параметр `--style raw` в MJ даёт более фотографичный результат.
-            </div>
-            <div class="prompt-tags">
-              <span class="prompt-tag">Midjourney</span>
-              <span class="prompt-tag">Киберпанк</span>
-              <span class="prompt-tag">Кинематографично</span>
-            </div>
-          </div>
-
-          <!-- Промт 2 -->
-          <div class="prompt-container">
-            <div class="prompt-header">
-              <div class="prompt-title">Магическая девочка (ностальгия 90-х)</div>
-            </div>
-            <div class="prompt" data-raw="1990s anime style, magical girl transformation sequence, dynamic spinning pose, sparkles and magical circles, gradient hair, detailed frilly dress, sparkling eyes, background with floating crystals, nostalgic cel-shaded look, VHS tape aesthetic, slight film grain --ar 4:3 --niji 5">
-1990s anime style, magical girl transformation sequence, dynamic spinning pose, sparkles and magical circles, gradient hair, detailed frilly dress, sparkling eyes, background with floating crystals, nostalgic cel-shaded look, VHS tape aesthetic, slight film grain --ar 4:3 --niji 5
-            </div>
-            <div class="prompt-explanation">
-              <strong>Анализ:</strong> Ключ здесь — указание конкретного стиля эпохи ("1990s anime style"). Затем описывается действие, поза, детали костюма и эффекты. Для атмосферы добавлена "ностальгическая cel-шэйдинг" и "эстетика VHS". Соотношение сторон 4:3 и модель `--niji 5` (заточенная под аниме) идеально подходят для воссоздания старого аниме.
-            </div>
-            <div class="prompt-tags">
-              <span class="prompt-tag">NijiJourney</span>
-              <span class="prompt-tag">Ретро-аниме</span>
-              <span class="prompt-tag">Магическая девочка</span>
-            </div>
-          </div>
-
-          <!-- Промт 3 -->
-          <div class="prompt-container">
-            <div class="prompt-header">
-              <div class="prompt-title">Фэнтезийный лес с духом</div>
-            </div>
-            <div class="prompt" data-raw="fantasy anime, enchanted forest at twilight, bioluminescent plants, ethereal forest spirit with butterfly wings, glowing particles, soft focus, ray tracing, atmospheric perspective, detailed vegetation, Makoto Shinkai style, vibrant colors, 8k, masterpiece, best quality --ar 3:2">
-fantasy anime, enchanted forest at twilight, bioluminescent plants, ethereal forest spirit with butterfly wings, glowing particles, soft focus, ray tracing, atmospheric perspective, detailed vegetation, Makoto Shinkai style, vibrant colors, 8k, masterpiece, best quality --ar 3:2
-            </div>
-            <div class="prompt-explanation">
-              <strong>Анализ:</strong> Этот промт создаёт атмосферную фэнтези-сцену. Ключевые элементы: время суток (сумерки), светящиеся растения, дух леса. Указание стиля Макото Синкая задаёт характерную атмосферу и работу со светом. Технические термины "ray tracing" и "atmospheric perspective" улучшают глубину и качество изображения.
-            </div>
-            <div class="prompt-tags">
-              <span class="prompt-tag">Stable Diffusion</span>
-              <span class="prompt-tag">Фэнтези</span>
-              <span class="prompt-tag">Макото Синкай</span>
-            </div>
-          </div>
-
-          <!-- Промт 4 -->
-          <div class="prompt-container">
-            <div class="prompt-header">
-              <div class="prompt-title">Меха-битва в космосе</div>
-            </div>
-            <div class="prompt" data-raw="mecha anime, epic space battle, giant robots clashing, laser beams and explosions, dynamic action shot, detailed mechanical design, glowing energy weapons, cosmic background with nebula, sci-fi aesthetic, high detail, Yoji Shinkawa inspired linework, cinematic lighting --ar 16:9">
-mecha anime, epic space battle, giant robots clashing, laser beams and explosions, dynamic action shot, detailed mechanical design, glowing energy weapons, cosmic background with nebula, sci-fi aesthetic, high detail, Yoji Shinkawa inspired linework, cinematic lighting --ar 16:9
-            </div>
-            <div class="prompt-explanation">
-              <strong>Анализ:</strong> Промт для динамичной сцены сражения мехов. Сначала задаётся жанр и сцена, затем добавляются детали действий (столкновение, лазерные лучи). Упоминание Ёдзи Синкавы влияет на стиль прорисовки механизмов. Космический фон с туманностью создаёт масштаб. Соотношение 16:9 оптимально для экшн-сцен.
-            </div>
-            <div class="prompt-tags">
-              <span class="prompt-tag">Меха</span>
-              <span class="prompt-tag">Экшен</span>
-              <span class="prompt-tag">Космос</span>
-            </div>
-          </div>
-
-          <!-- Промт 5 -->
-          <div class="prompt-container">
-            <div class="prompt-header">
-              <div class="prompt-title">Уютная кофейня в дождь</div>
-            </div>
-            <div class="prompt" data-raw="cozy anime style, rainy day in a small coffee shop, warm interior lighting, steam from coffee cups, girl reading book by window, raindrops on glass, soft shadows, detailed interior, Studio Ghibli atmosphere, comfortable mood, slice of life, muted color palette --ar 5:4 --s 700">
-cozy anime style, rainy day in a small coffee shop, warm interior lighting, steam from coffee cups, girl reading book by window, raindrops on glass, soft shadows, detailed interior, Studio Ghibli atmosphere, comfortable mood, slice of life, muted color palette --ar 5:4 --s 700
-            </div>
-            <div class="prompt-explanation">
-              <strong>Анализ:</strong> Промт создаёт уютную атмосферную сцену. Акцент на деталях, передающих настроение: пар от чашек, капли дождя на стекле, тёплый свет. Указание на атмосферу Ghibli задаёт стиль. Параметр `--s 700` контролирует креативность, делая результат более предсказуемым. Соотношение 5:4 подходит для таких уютных кадров.
-            </div>
-            <div class="prompt-tags">
-              <span class="prompt-tag">Повседневность</span>
-              <span class="prompt-tag">Уют</span>
-              <span class="prompt-tag">Studio Ghibli</span>
-            </div>
-          </div>
+          <!-- Промты будут вставлены через JavaScript -->
         </div>
       </section>
 
       <section class="card" id="animeSection">
         <div>
-          <h2>Мои любимые аниме</h2>
-          <p class="lead">Подборка тайтлов, которые меня вдохновляют и влияют на мою работу.</p>
+          <h2 id="anime-title">Мои любимые аниме</h2>
+          <p id="anime-desc" class="lead">Подборка тайтлов, которые меня вдохновляют и влияют на мою работу.</p>
         </div>
 
         <div id="animeGrid" class="anime-grid" style="margin-top:12px">
@@ -463,212 +100,15 @@ cozy anime style, rainy day in a small coffee shop, warm interior lighting, stea
       </section>
 
       <footer>
-        Портфолио промт-инженера Angelok | Discord: @qweangelok | Обновлено: февраль 2026
+        <span id="footer-text">Портфолио промт-инженера Angelok | Discord: @qweangelok | Обновлено: февраль 2026</span>
         <br><br>
       </footer>
     </main>
   </div>
 
-  <script>
-    // --- Данные аниме (ваши любимые) с картинками ---
-    const animeData = [
-      {
-        id: 1,
-        title: "Гачиакута",
-        image: "https://v12.vost.pw/uploads/posts/2025-06/1750584642_1.jpg?v2",
-        description: "История о Рудже, жителе трущоб, который попадает в таинственный мир Гачиакуты, где сталкивается с демонами и древними секретами. Он получает могущественные способности и начинает свое путешествие по раскрытию правды о своем прошлом.",
-        genres: ["Экшен", "Фэнтези", "Приключения", "Драма"],
-        format: "TV Сериал",
-        episodes: 12,
-        averageScore: 84
-      },
-      {
-        id: 2,
-        title: "Хроники людей и демонов",
-        image: "https://v12.vost.pw/uploads/posts/2024-06/1717509032_1.jpg?v2",
-        description: "В мире, где люди сражаются с демонами за выживание, юный воин присоединяется к элите охотников на демонов. Сюжет исследует моральные дилеммы и сложные отношения между двумя расами.",
-        genres: ["Экшен", "Фэнтези", "Драма", "Сверхъестественное"],
-        format: "TV Сериал",
-        episodes: 24,
-        averageScore: 82
-      },
-      {
-        id: 3,
-        title: "Кайдзю №8",
-        image: "https://v12.vost.pw/uploads/posts/2025-06/1750245339_3.jpg?v2",
-        description: "В Японии, регулярно подвергающейся атакам кайдзю, Кафка Хибино работает в команде по уборке останков монстров. После неожиданного события он сам становится кайдзю №8 и должен скрывать свою природу, сражаясь с другими монстрами.",
-        genres: ["Экшен", "Комедия", "Сёнэн", "Суперсила"],
-        format: "TV Сериал",
-        episodes: 12,
-        averageScore: 86
-      },
-      {
-        id: 4,
-        title: "Песнь ночных сов",
-        image: "https://v12.vost.pw/uploads/posts/2025-06/1750322019_1.jpg?v2",
-        description: "В подземном мире, населенном вампирами и другими ночными существами, группа охотников пытается сохранить хрупкое равновесие между мирами. Главный герой обладает уникальной способностью видеть истинную сущность существ.",
-        genres: ["Фэнтези", "Мистика", "Драма", "Приключения"],
-        format: "TV Сериал",
-        episodes: 13,
-        averageScore: 83
-      },
-      {
-        id: 5,
-        title: "Повелитель тайн: Клоун",
-        image: "https://v12.vost.pw/uploads/posts/2025-06/1751103460_1.png?v2",
-        description: "В мире, где магия скрыта от обычных людей, главный герой случайно обнаруживает, что является носителем древней силы Повелителя Тайн. Чтобы защитить близких, он вынужден балансировать между обычной жизнью и миром магических интриг.",
-        genres: ["Мистика", "Драма", "Фэнтези", "Приключения"],
-        format: "TV Сериал",
-        episodes: 10,
-        averageScore: 81
-      },
-      {
-        id: 6,
-        title: "Поднятие уровня в одиночку",
-        image: "https://v12.vost.pw/uploads/posts/2024-12/1733928184_1.jpg?v2",
-        description: "В мире, где охотники сражаются с монстрами из врат, Сон Джин-У считается самым слабым охотником. После попадания в смертельную ловушку он получает уникальную систему, позволяющую расти в силе, и начинает свое восхождение к вершине.",
-        genres: ["Экшен", "Фэнтези", "Приключения", "Игра"],
-        format: "TV Сериал",
-        episodes: 12,
-        averageScore: 88
-      },
-      {
-        id: 7,
-        title: "Арифурэта: Сильнейший ремесленник в мире",
-        image: "https://v12.vost.pw/uploads/posts/2024-12/1734365931_1.jpg?v2",
-        description: "Хадзиме Нагамото и его одноклассники попадают в фэнтезийный мир, где все получают уникальные способности. Хадзиме получает, казалось бы, бесполезную профессию ремесленника, но использует свои знания для создания невероятных технологий и оружия.",
-        genres: ["Исекай", "Фэнтези", "Экшен", "Приключения"],
-        format: "TV Сериал",
-        episodes: 13,
-        averageScore: 85
-      },
-      {
-        id: 8,
-        title: "Башня Бога",
-        image: "https://v12.vost.pw/uploads/posts/2024-10/1727768359_1.jpg?v2",
-        description: "Двадцать пятый Бам решает подняться на Таинственную Башню, чтобы найти свою подругу Рейчел. В башне его ждут смертельные испытания, политические интриги и встреча с необычными союзниками. Каждый этап башни — это новый мир с собственными правилами.",
-        genres: ["Фэнтези", "Приключения", "Драма", "Экшен"],
-        format: "TV Сериал",
-        episodes: 13,
-        averageScore: 87
-      },
-      {
-        id: 9,
-        title: "Почему все забыли мой мир?",
-        image: "https://v12.vost.pw/uploads/posts/2024-07/1720887961_1.jpg?v2",
-        description: "Главный герой просыпается в мире, где никто не помнит его существования. Постепенно он обнаруживает, что стал невидимкой для общества, и начинает расследование таинственного явления, пытаясь вернуть свое место в мире.",
-        genres: ["Драма", "Мистика", "Психологическое", "Фэнтези"],
-        format: "TV Сериал",
-        episodes: 11,
-        averageScore: 82
-      },
-      {
-        id: 10,
-        title: "О моём перерождении в слизь",
-        image: "https://v12.vost.pw/uploads/posts/2024-03/1710334118_1.jpg?v2",
-        description: "Сатору Миками, обычный офисный работник, перерождается в фэнтезийном мире в виде слайма. Обладая уникальными способностями поглощения и имитации, он начинает строить собственное королевство, объединяя различные расы и создавая утопическое общество.",
-        genres: ["Исекай", "Фэнтези", "Комедия", "Приключения"],
-        format: "TV Сериал",
-        episodes: 24,
-        averageScore: 89
-      }
-    ];
-
-    // --- Отрисовка сетки аниме с картинками ---
-    function renderAnimeGrid(items){
-      const grid = document.getElementById('animeGrid');
-      grid.innerHTML = '';
-
-      items.forEach(a => {
-        const genresHTML = a.genres.map(genre => 
-          `<span class="anime-genre">${escapeHtml(genre)}</span>`
-        ).join('');
-        
-        // Проверяем, есть ли изображение
-        const imageStyle = a.image ? 
-          `background-image: url('${a.image}')` : 
-          'background: linear-gradient(135deg, var(--accent1), var(--accent2))';
-        
-        const el = document.createElement('article');
-        el.className = 'anime-card';
-        el.innerHTML = `
-          <div class="anime-image" style="${imageStyle}">
-            <div class="anime-image-overlay"></div>
-          </div>
-          <div class="anime-body">
-            <div class="anime-meta">
-              <span>${a.format || 'TV Сериал'} • ${a.episodes || '?'} эп.</span>
-              <span class="anime-score">${a.averageScore || '—'}%</span>
-            </div>
-            <div class="anime-title">${escapeHtml(a.title)}</div>
-            <div class="anime-genres">
-              ${genresHTML}
-            </div>
-            <div class="anime-desc">${escapeHtml(a.description)}</div>
-          </div>
-        `;
-        grid.appendChild(el);
-      });
-    }
-
-    // --- Вспомогательная функция ---
-    function escapeHtml(s){
-      if(!s) return '';
-      return s.replace(/[&<>"']/g, function(m){
-        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]);
-      });
-    }
-
-    // --- Копирование промтов при клике ---
-    document.addEventListener('DOMContentLoaded', () => {
-      // Загружаем данные аниме при старте
-      renderAnimeGrid(animeData);
-      
-      // Обработчик клика на промты
-      document.querySelectorAll('.prompt').forEach(promptElement => {
-        promptElement.addEventListener('click', async function() {
-          const text = this.dataset.raw || this.textContent.trim();
-          
-          try {
-            await navigator.clipboard.writeText(text);
-            
-            // Визуальная обратная связь
-            this.classList.add('prompt-copied');
-            const originalText = this.textContent;
-            this.textContent = 'Ну допустим.. вы его скопировали!!';
-            
-            setTimeout(() => {
-              this.classList.remove('prompt-copied');
-              this.textContent = originalText;
-            }, 1500);
-            
-          } catch(e) {
-            // Fallback для старых браузеров
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-              document.execCommand('copy');
-              
-              // Визуальная обратная связь и для fallback
-              this.classList.add('prompt-copied');
-              const originalText = this.textContent;
-              this.textContent = 'Ну допустим.. вы его скопировали!!';
-              
-              setTimeout(() => {
-                this.classList.remove('prompt-copied');
-                this.textContent = originalText;
-              }, 1500);
-              
-            } catch (err) {
-              alert('Не удалось скопировать промт. Выделите текст вручную.');
-            }
-            document.body.removeChild(textArea);
-          }
-        });
-      });
-    });
-  </script>
+  <!-- JavaScript -->
+  <script src="js/translations.js"></script>
+  <script src="js/anime-data.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
