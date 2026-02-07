@@ -1,1228 +1,616 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Аниме тяночка - ваш персональный помощник</title>
-    <link rel="icon" type="image/png" href="https://i.pinimg.com/originals/df/1c/98/df1c98a24d0196f58fa5449ab0a2f6c2.gif">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'M PLUS Rounded 1c', 'Nunito', sans-serif;
-        }
-
-        :root {
-            --primary: #ff6b9c;
-            --secondary: #9c5fff;
-            --dark: #1a1a2e;
-            --darker: #0d0d1a;
-            --light: #f8f9fa;
-            --accent: #5ff3ff;
-            --pink-light: #ffd6e7;
-            --purple-light: #d6c8ff;
-        }
-
-        body {
-            background: url('https://p4.wallpaperbetter.com/wallpaper/584/149/276/selective-coloring-black-background-dark-background-simple-background-anime-girls-hd-wallpaper-preview.jpg') center/cover fixed;
-            color: var(--light);
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
-            position: relative;
-        }
-
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(13, 13, 26, 0.85);
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header Styles */
-        header {
-            padding: 40px 0;
-            text-align: center;
-            position: relative;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 2;
-            animation: fadeIn 1.2s ease-out;
-        }
-
-        .bot-avatar {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 5px solid var(--primary);
-            box-shadow: 0 0 40px rgba(255, 107, 156, 0.7);
-            margin: 0 auto 25px;
-            background: url('https://i.pinimg.com/originals/df/1c/98/df1c98a24d0196f58fa5449ab0a2f6c2.gif') center/cover;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .bot-avatar::after {
-            content: "";
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            z-index: -1;
-            animation: rotate 10s linear infinite;
-        }
-
-        h1 {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        .tagline {
-            font-size: 1.5rem;
-            margin-bottom: 40px;
-            color: var(--pink-light);
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .invite-btn {
-            display: inline-block;
-            background: rgba(156, 95, 255, 0.15);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 18px 50px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin: 20px 0;
-            box-shadow: 0 5px 25px rgba(156, 95, 255, 0.3);
-            transition: all 0.3s ease;
-            border: 2px solid rgba(156, 95, 255, 0.5);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 1px;
-        }
-
-        .invite-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(156, 95, 255, 0.5);
-            background: rgba(156, 95, 255, 0.25);
-        }
-
-        .invite-btn:active {
-            transform: translateY(0);
-        }
-
-        .invite-btn::after {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 20px;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(30deg);
-            transition: all 0.6s;
-        }
-
-        .invite-btn:hover::after {
-            left: 120%;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 60px;
-            color: var(--accent);
-            position: relative;
-            display: block;
-            text-shadow: 0 2px 10px rgba(95, 243, 255, 0.3);
-        }
-
-        .section-title::after {
-            content: "";
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-            border-radius: 2px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 35px;
-            margin-top: 40px;
-        }
-
-        .feature-card {
-            background: rgba(26, 26, 46, 0.25);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 35px 25px;
-            text-align: center;
-            transition: all 0.4s ease;
-            border: 1px solid rgba(156, 95, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(156, 95, 255, 0.3);
-            border-color: rgba(156, 95, 255, 0.5);
-            background: rgba(26, 26, 46, 0.4);
-        }
-
-        .feature-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            z-index: -1;
-        }
-
-        .feature-icon {
-            font-size: 3.5rem;
-            margin-bottom: 25px;
-            color: var(--primary);
-            text-shadow: 0 0 15px rgba(255, 107, 156, 0.7);
-        }
-
-        .feature-card h3 {
-            font-size: 1.9rem;
-            margin-bottom: 20px;
-            color: var(--accent);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-card p {
-            font-size: 1.15rem;
-            line-height: 1.7;
-            color: var(--pink-light);
-        }
-
-        /* Welcome Section */
-        .welcome {
-            padding: 100px 0;
-            text-align: center;
-            background: rgba(13, 13, 26, 0.4);
-            margin: 80px 0;
-            position: relative;
-            border-top: 2px solid rgba(156, 95, 255, 0.3);
-            border-bottom: 2px solid rgba(156, 95, 255, 0.3);
-            backdrop-filter: blur(5px);
-        }
-
-        .welcome h2 {
-            font-size: 3.2rem;
-            margin-bottom: 30px;
-            color: var(--primary);
-            text-shadow: 0 2px 10px rgba(255, 107, 156, 0.4);
-        }
-
-        .welcome p {
-            font-size: 1.4rem;
-            max-width: 850px;
-            margin: 0 auto 40px;
-            color: var(--purple-light);
-            line-height: 1.8;
-        }
-
-        .embed-builder {
-            background: rgba(26, 26, 46, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 850px;
-            margin: 50px auto 0;
-            text-align: left;
-            border: 1px solid rgba(95, 243, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .embed-builder::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://i.pinimg.com/564x/7c/1f/3e/7c1f3e1c8f3e8e5c0d0d5c0d5c0d5c0d.jpg') center/cover;
-            opacity: 0.1;
-            z-index: 0;
-        }
-
-        .embed-builder-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .embed-builder h3 {
-            color: var(--accent);
-            margin-bottom: 25px;
-            font-size: 2.2rem;
-            text-align: center;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-
-        .embed-builder h3::after {
-            content: "";
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-        }
-
-        /* Стили для красивого письма */
-        .anime-letter {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 20px 0;
-            border-left: 5px solid var(--primary);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .anime-letter::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://i.pinimg.com/564x/2e/6d/2f/2e6d2f5c5c5c5c5c5c5c5c5c5c5c5c5c.jpg') center/cover;
-            opacity: 0.05;
-            z-index: 0;
-        }
-
-        .letter-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .letter-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .letter-title {
-            font-size: 2.5rem;
-            color: var(--pink-light);
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .letter-subtitle {
-            font-size: 1.4rem;
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .letter-body {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: var(--purple-light);
-        }
-
-        .letter-section {
-            margin-bottom: 20px;
-            padding-left: 20px;
-            border-left: 2px solid rgba(255, 107, 156, 0.3);
-        }
-
-        .letter-section-title {
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
-            color: var(--pink-light);
-            margin-bottom: 10px;
-        }
-
-        .letter-section-title i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-
-        .letter-text {
-            margin-bottom: 15px;
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .letter-text::before {
-            content: "❀";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--primary);
-        }
-
-        .letter-emojis {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 5px 10px;
-            margin: 5px 0;
-            font-size: 1.2rem;
-        }
-
-        .letter-signature {
-            text-align: right;
-            margin-top: 30px;
-            font-style: italic;
-            color: var(--pink-light);
-            font-size: 1.3rem;
-            padding-right: 50px;
-            position: relative;
-        }
-
-        .letter-signature::before {
-            content: "~";
-            position: absolute;
-            left: -20px;
-            top: 0;
-            color: var(--primary);
-            font-size: 2rem;
-        }
-
-        .sakura-decoration {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 3rem;
-            color: rgba(255, 107, 156, 0.3);
-            transform: rotate(15deg);
-            animation: sakuraFloat 8s infinite ease-in-out;
-        }
-
-        .sakura-decoration:nth-child(2) {
-            top: 40px;
-            right: 50px;
-            font-size: 2rem;
-            animation-delay: 2s;
-        }
-
-        .sakura-decoration:nth-child(3) {
-            top: 60px;
-            right: 30px;
-            font-size: 2.5rem;
-            animation-delay: 4s;
-        }
-
-        /* Developers Section */
-        .developers {
-            padding: 100px 0;
-            text-align: center;
-        }
-
-        .dev-grid {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 50px;
-            margin-top: 60px;
-        }
-
-        .dev-card {
-            background: rgba(26, 26, 46, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 40px 30px;
-            width: 350px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 107, 156, 0.3);
-            transition: all 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .dev-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(255, 107, 156, 0.3);
-            border-color: rgba(255, 107, 156, 0.7);
-            background: rgba(26, 26, 46, 0.4);
-        }
-
-        .dev-avatar {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            margin: 0 auto 30px;
-            background: url('https://i.pinimg.com/236x/0b/36/42/0b364227f129e43ede0bb276551052e8.jpg') center/cover;
-            border: 4px solid var(--primary);
-            box-shadow: 0 0 30px rgba(255, 107, 156, 0.6);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .dev-avatar::after {
-            content: "";
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            z-index: -1;
-            animation: rotate 10s linear infinite;
-        }
-
-        .dev-card h3 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            color: var(--accent);
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .dev-role {
-            color: var(--primary);
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .dev-card p {
-            font-size: 1.2rem;
-            color: var(--purple-light);
-            line-height: 1.7;
-        }
-
-        .dev-quote {
-            font-style: italic;
-            color: var(--pink-light);
-            margin-top: 30px;
-            font-size: 1.3rem;
-            position: relative;
-            padding-top: 30px;
-        }
-
-        .dev-quote::before {
-            content: "";
-            font-size: 4rem;
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 107, 156, 0.3);
-        }
-
-        /* Privacy and Terms Section */
-        .legal-section {
-            padding: 80px 0;
-            background: rgba(13, 13, 26, 0.5);
-            backdrop-filter: blur(10px);
-            border-top: 2px solid var(--secondary);
-            border-bottom: 2px solid var(--secondary);
-        }
-
-        .legal-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 30px;
-            background: rgba(26, 26, 46, 0.4);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(156, 95, 255, 0.3);
-        }
-
-        .legal-container h2 {
-            text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 40px;
-            color: var(--accent);
-            text-shadow: 0 2px 4px rgba(95, 243, 255, 0.3);
-            position: relative;
-        }
-
-        .legal-container h2::after {
-            content: "";
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-        }
-
-        .legal-container h3 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin: 30px 0 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 107, 156, 0.3);
-        }
-
-        .legal-container p {
-            color: var(--pink-light);
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 15px;
-        }
-
-        .legal-container ul {
-            padding-left: 30px;
-            margin-bottom: 20px;
-        }
-
-        .legal-container li {
-            color: var(--purple-light);
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-
-        .legal-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 40px;
-            gap: 20px;
-        }
-
-        .legal-tab {
-            padding: 12px 30px;
-            background: rgba(156, 95, 255, 0.2);
-            border: 1px solid var(--secondary);
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            color: var(--pink-light);
-        }
-
-        .legal-tab.active {
-            background: var(--secondary);
-            box-shadow: 0 0 20px rgba(156, 95, 255, 0.5);
-        }
-
-        .legal-tab:hover:not(.active) {
-            background: rgba(156, 95, 255, 0.3);
-        }
-
-        .legal-content {
-            display: none;
-        }
-
-        .legal-content.active {
-            display: block;
-            animation: fadeIn 0.8s ease;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(13, 13, 26, 0.7);
-            padding: 50px 0 30px;
-            text-align: center;
-            border-top: 1px solid rgba(95, 243, 255, 0.2);
-            margin-top: 60px;
-            backdrop-filter: blur(5px);
-        }
-
-        .footer-content {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .footer-content p {
-            color: var(--purple-light);
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            line-height: 1.8;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: rgba(156, 95, 255, 0.15);
-            backdrop-filter: blur(5px);
-            color: white;
-            font-size: 2rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(156, 95, 255, 0.4);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .social-links a:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(156, 95, 255, 0.4);
-            background: rgba(156, 95, 255, 0.25);
-            border-color: rgba(156, 95, 255, 0.7);
-        }
-
-        .copyright {
-            margin-top: 40px;
-            color: var(--pink-light);
-            font-size: 1.1rem;
-            opacity: 0.8;
-        }
-
-        .footer-links {
-            margin-top: 20px;
-        }
-
-        .footer-links a {
-            color: var(--primary);
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            text-decoration: underline;
-            color: var(--accent);
-        }
-
-        /* Animations */
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes sakuraFloat {
-            0% {
-                transform: translateY(0) rotate(15deg);
-            }
-            50% {
-                transform: translateY(-15px) rotate(25deg);
-            }
-            100% {
-                transform: translateY(0) rotate(15deg);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            h1 {
-                font-size: 3.2rem;
-            }
-            
-            .tagline {
-                font-size: 1.3rem;
-            }
-            
-            .section-title {
-                font-size: 2.5rem;
-            }
-            
-            .feature-card {
-                padding: 30px 20px;
-            }
-            
-            .feature-card h3 {
-                font-size: 1.7rem;
-            }
-            
-            .welcome h2 {
-                font-size: 2.7rem;
-            }
-            
-            .welcome p {
-                font-size: 1.2rem;
-            }
-            
-            .legal-container {
-                padding: 20px;
-            }
-            
-            .letter-title {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.7rem;
-            }
-            
-            .bot-avatar {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .invite-btn {
-                padding: 15px 40px;
-                font-size: 1.2rem;
-            }
-            
-            .dev-grid {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .social-links a {
-                width: 60px;
-                height: 60px;
-                font-size: 1.8rem;
-            }
-            
-            .legal-tabs {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .letter-title {
-                font-size: 1.8rem;
-            }
-            
-            .letter-subtitle {
-                font-size: 1.2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .tagline {
-                font-size: 1.1rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .bot-avatar {
-                width: 130px;
-                height: 130px;
-            }
-            
-            .invite-btn {
-                padding: 12px 30px;
-                font-size: 1.1rem;
-            }
-            
-            .feature-icon {
-                font-size: 3rem;
-            }
-            
-            .dev-avatar {
-                width: 140px;
-                height: 140px;
-            }
-            
-            .social-links {
-                gap: 15px;
-            }
-            
-            .social-links a {
-                width: 55px;
-                height: 55px;
-                font-size: 1.6rem;
-            }
-            
-            .legal-container h2 {
-                font-size: 2.2rem;
-            }
-            
-            .letter-title {
-                font-size: 1.6rem;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Портфолио — Промт-инженер для аниме-артов</title>
+  <meta name="description" content="Специалист по промт-инжинирингу: создаю сложные промты для нейросетей, сайтов, постов и креативных проектов." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --bg2: #1b0836;
+      --accent1: #9d4edd;
+      --accent2: #c77dff;
+      --accent3: #e0aaff;
+      --card: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.08);
+      --text: #e6eef8;
+      --muted: #a9b6c8;
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: url('https://img1.akspic.ru/crops/5/4/0/4/7/174045/174045-anime-anime_art-siluet-zhivopis-atmosfera-3840x2160.png') no-repeat center center fixed,
+                  radial-gradient(1200px 600px at 10% 10%, rgba(127,34,255,0.12), transparent),
+                  radial-gradient(1000px 450px at 90% 90%, rgba(122,255,255,0.06), transparent),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      background-size: cover;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      padding:32px;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    .sidebar{
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.8);
+      position:sticky;
+      top:32px;
+      min-height:240px;
+      border:1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px);
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    .avatar-container{
+      width:180px;
+      height:180px;
+      margin-bottom:18px;
+    }
+    .avatar-img{
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      object-fit:cover;
+      border:4px solid var(--accent1);
+      box-shadow:0 0 25px rgba(157, 78, 221, 0.4);
+    }
+    .sidebar h1{
+      margin:0 0 6px 0;
+      font-family:"Zen Dots";
+      font-size:28px;
+      letter-spacing:0.6px;
+      text-align:center;
+    }
+    .sidebar .role{
+      color:var(--accent2);
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .info-block{
+      width:100%;
+      margin-bottom:14px;
+    }
+    .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+    .chip{
+      background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      padding:8px 10px;border-radius:999px;color:var(--muted);font-size:13px;
+      border:1px solid rgba(255,255,255,0.10)
+    }
+
+    .main{
+      min-height:400px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+      border-radius:12px;
+      padding:18px;
+      margin-bottom:20px;
+      box-shadow: 0 6px 24px rgba(5,8,20,0.6);
+      border:1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px);
+    }
+
+    h2{
+      margin:0 0 10px 0;
+      font-size:20px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    p.lead{color:var(--muted);margin-top:6px;font-size:14px;line-height:1.5}
+
+    .prompts{display:flex;flex-direction:column;gap:14px}
+    .prompt-container{
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.10);
+      transition: transform 0.2s ease;
+    }
+    .prompt-container:hover {
+      transform: translateY(-2px);
+      background:linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+    }
+    .prompt-header{
+      display:flex;justify-content:center;align-items:center;margin-bottom:10px;
+    }
+    .prompt-title{
+      font-size:14px;color:var(--accent3);font-weight:600;text-align:center;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 700;
+    }
+    .prompt{
+      background:rgba(0,0,0,0.3);
+      padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:13px;color:#e0e0ff;white-space:pre-wrap;margin-bottom:10px;
+      line-height:1.4;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .prompt:hover {
+      background:rgba(0,0,0,0.4);
+      border-color: rgba(199, 125, 255, 0.3);
+    }
+    .prompt:active {
+      transform: scale(0.99);
+    }
+    .prompt::after {
+      content: "Скопировать?";
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 11px;
+      color: var(--accent3);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      font-family: "Inter", sans-serif;
+    }
+    .prompt:hover::after {
+      opacity: 1;
+    }
+    .prompt-copied {
+      background: rgba(157, 78, 221, 0.15) !important;
+      border-color: var(--accent2) !important;
+    }
+    .prompt-explanation{
+      font-size:12px;color:var(--muted);padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);
+      line-height:1.5;
+    }
+    .prompt-tags {
+      display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;justify-content:center;
+    }
+    .prompt-tag {
+      background:rgba(157, 78, 221, 0.15);color:var(--accent3);padding:4px 8px;border-radius:6px;
+      font-size:11px;font-weight:600;
+    }
+
+    .anime-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+      gap:14px;
+      margin-top:12px;
+    }
+    .anime-card{
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.1));
+      display:flex;flex-direction:column;height:100%;
+      border:1px solid rgba(255,255,255,0.10);
+      padding:16px;
+      transition:transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .anime-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 10px 20px rgba(0,0,0,0.3);
+    }
+    .anime-body{padding:0;flex:1;display:flex;flex-direction:column;gap:10px}
+    .anime-title{
+      font-weight:600;font-size:16px;color:var(--accent2);margin-bottom:4px;
+      text-align:center;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .anime-meta{
+      display:flex;justify-content:space-between;align-items:center;
+      font-size:12px;color:var(--muted);
+    }
+    .anime-score{
+      font-weight:700;color:var(--accent1);font-size:14px;
+    }
+    .anime-genres{
+      display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;justify-content:center;
+    }
+    .anime-genre{
+      background:rgba(157, 78, 221, 0.15);color:var(--accent3);padding:4px 8px;
+      border-radius:6px;font-size:11px;font-weight:600;
+    }
+    .anime-desc{
+      font-size:13px;color:var(--muted);line-height:1.5;
+      display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    .skill-viz{
+      display:flex;flex-direction:column;gap:10px;margin-top:15px;
+    }
+    .skill-item{
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .skill-name{font-size:13px}
+    .skill-bar{
+      width:60%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;
+    }
+    .skill-fill{
+      height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:3px;
+    }
+
+    footer{margin-top:28px;color:var(--muted);font-size:13px;text-align:center}
+    @media(max-width:980px){
+      .container{grid-template-columns:1fr; padding-bottom:40px}
+      body{padding:16px}
+    }
+  </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="bot-avatar"></div>
-                <h1>Аниме тяночка</h1>
-                <p class="tagline">Ваш персональный аниме-помощник, который всегда под рукой</p>
-                <a href="https://discord.com/oauth2/authorize?client_id=1343464863867076648" class="invite-btn">
-                    Пригласить на сервер
-                </a>
-            </div>
-        </div>
-    </header>
+  <div class="container">
+    <aside class="sidebar card">
+      <div class="avatar-container">
+        <img src="https://i.pinimg.com/736x/fe/7f/42/fe7f420fff6b113e1ab6188ab638ecf9.jpg" alt="Angelok" class="avatar-img">
+      </div>
+      <h1>Angelok</h1>
+      <div class="role">Промт-инженер & Аниме-энтузиаст</div>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Функции бота</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Модерация</h3>
-                    <p>Автоматическая модерация вашего сервера, защита от спама и нарушителей</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-door-open"></i>
-                    </div>
-                    <h3>Приветствие</h3>
-                    <p>Настройка красивых приветственных сообщений с аниме-тематикой</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <h3>Экономика</h3>
-                    <p>Игровая экономика с валютой, магазином и работой</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-microphone-alt"></i>
-                    </div>
-                    <h3>Голосовые каналы</h3>
-                    <p>Автоматическое создание персональных голосовых каналов</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <h3>Отношения</h3>
-                    <p>Встречайтесь, вступайте в брак и создавайте виртуальную семью</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-theater-masks"></i>
-                    </div>
-                    <h3>Ролевые игры</h3>
-                    <p>Общайтесь, целуйтесь, обнимайтесь - выражайте эмоции с помощью команд</p>
-                </div>
-            </div>
+      <div class="info-block">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Навыки</strong>
+          <span style="font-size:12px; color:var(--muted)">Опыт: 3+ года</span>
         </div>
-    </section>
+        <div class="skill-viz">
+          <div class="skill-item">
+            <span class="skill-name">Stable Diffusion</span>
+            <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Midjourney</span>
+            <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Аниме-стилизация</span>
+            <div class="skill-bar"><div class="skill-fill" style="width:98%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">LoRA / ControlNet</span>
+            <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+          </div>
+        </div>
+      </div>
 
-    <!-- Welcome Section -->
-    <section class="welcome">
-        <div class="container">
-            <h2>Добро пожаловать</h2>
-            <p>Настройте уникальные приветственные уведомления для новых участников сервера в виде текста, встраивания или красивой аниме-открытки.</p>
+      <div class="info-block">
+        <strong>Контакты</strong>
+        <div style="margin-top:8px; font-size:13px; color:var(--muted)">
+          <div>Discord: @qweangelok</div>
+          <div>Telegram: @ztcqidxx</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="card">
+        <h2>Обо мне</h2>
+        <p class="lead">
+          Я — специалист по промт-инжинирингу с широким профилем работ. Моя деятельность включает создание сложных промтов для генерации аниме-артов в нейросетях, разработку текстового контента для сайтов и постов, а также генерацию креативных идей для различных проектов.
+        </p>
+        <p class="lead">
+          Экспериментирую с архитектурой нейросетей, весами, комбинациями стилей и параметрами моделей для достижения нужного результата — будь то визуальные образы, текстовый контент или комплексные решения. Мой подход — глубокое понимание механизмов работы AI и создание точных, детализированных промтов, которые превращают абстрактные концепции в качественный конечный продукт.
+        </p>
+      </section>
+
+      <section class="card">
+        <div>
+          <h2>Коллекция промтов</h2>
+          <p class="lead">Нажмите на любой промт, чтобы скопировать его в буфер обмена.</p>
+        </div>
+
+        <div class="prompts" id="prompts">
+          <!-- Промт 1 -->
+          <div class="prompt-container">
+            <div class="prompt-header">
+              <div class="prompt-title">Атмосферный киберпанк</div>
+            </div>
+            <div class="prompt" data-raw="cinematic shot, cyberpunk street at night, raining, neon signs in japanese, reflective wet asphalt, a lone figure with holographic umbrella, deep shadows, volumetric fog, shot on cinematic camera, 35mm, anamorphic lens flare, masterpiece, 8k --ar 21:9 --v 6.0 --style raw">
+cinematic shot, cyberpunk street at night, raining, neon signs in japanese, reflective wet asphalt, a lone figure with holographic umbrella, deep shadows, volumetric fog, shot on cinematic camera, 35mm, anamorphic lens flare, masterpiece, 8k --ar 21:9 --v 6.0 --style raw
+            </div>
+            <div class="prompt-explanation">
+              <strong>Анализ:</strong> Промт начинается с определения типа кадра (cinematic shot), затем задаёт сцену, погоду и ключевые детали (неоновые вывески, мокрая дорога). Фигура с зонтом — смысловой центр. Далее идут параметры, влияющие на качество и атмосферу: глубина теней, объёмный туман, имитация съёмки на кинокамеру с анаморфным бликом. Параметр `--style raw` в MJ даёт более фотографичный результат.
+            </div>
+            <div class="prompt-tags">
+              <span class="prompt-tag">Midjourney</span>
+              <span class="prompt-tag">Киберпанк</span>
+              <span class="prompt-tag">Кинематографично</span>
+            </div>
+          </div>
+
+          <!-- Промт 2 -->
+          <div class="prompt-container">
+            <div class="prompt-header">
+              <div class="prompt-title">Магическая девочка (ностальгия 90-х)</div>
+            </div>
+            <div class="prompt" data-raw="1990s anime style, magical girl transformation sequence, dynamic spinning pose, sparkles and magical circles, gradient hair, detailed frilly dress, sparkling eyes, background with floating crystals, nostalgic cel-shaded look, VHS tape aesthetic, slight film grain --ar 4:3 --niji 5">
+1990s anime style, magical girl transformation sequence, dynamic spinning pose, sparkles and magical circles, gradient hair, detailed frilly dress, sparkling eyes, background with floating crystals, nostalgic cel-shaded look, VHS tape aesthetic, slight film grain --ar 4:3 --niji 5
+            </div>
+            <div class="prompt-explanation">
+              <strong>Анализ:</strong> Ключ здесь — указание конкретного стиля эпохи ("1990s anime style"). Затем описывается действие, поза, детали костюма и эффекты. Для атмосферы добавлена "ностальгическая cel-шэйдинг" и "эстетика VHS". Соотношение сторон 4:3 и модель `--niji 5` (заточенная под аниме) идеально подходят для воссоздания старого аниме.
+            </div>
+            <div class="prompt-tags">
+              <span class="prompt-tag">NijiJourney</span>
+              <span class="prompt-tag">Ретро-аниме</span>
+              <span class="prompt-tag">Магическая девочка</span>
+            </div>
+          </div>
+
+          <!-- Промт 3 -->
+          <div class="prompt-container">
+            <div class="prompt-header">
+              <div class="prompt-title">Фэнтезийный лес с духом</div>
+            </div>
+            <div class="prompt" data-raw="fantasy anime, enchanted forest at twilight, bioluminescent plants, ethereal forest spirit with butterfly wings, glowing particles, soft focus, ray tracing, atmospheric perspective, detailed vegetation, Makoto Shinkai style, vibrant colors, 8k, masterpiece, best quality --ar 3:2">
+fantasy anime, enchanted forest at twilight, bioluminescent plants, ethereal forest spirit with butterfly wings, glowing particles, soft focus, ray tracing, atmospheric perspective, detailed vegetation, Makoto Shinkai style, vibrant colors, 8k, masterpiece, best quality --ar 3:2
+            </div>
+            <div class="prompt-explanation">
+              <strong>Анализ:</strong> Этот промт создаёт атмосферную фэнтези-сцену. Ключевые элементы: время суток (сумерки), светящиеся растения, дух леса. Указание стиля Макото Синкая задаёт характерную атмосферу и работу со светом. Технические термины "ray tracing" и "atmospheric perspective" улучшают глубину и качество изображения.
+            </div>
+            <div class="prompt-tags">
+              <span class="prompt-tag">Stable Diffusion</span>
+              <span class="prompt-tag">Фэнтези</span>
+              <span class="prompt-tag">Макото Синкай</span>
+            </div>
+          </div>
+
+          <!-- Промт 4 -->
+          <div class="prompt-container">
+            <div class="prompt-header">
+              <div class="prompt-title">Меха-битва в космосе</div>
+            </div>
+            <div class="prompt" data-raw="mecha anime, epic space battle, giant robots clashing, laser beams and explosions, dynamic action shot, detailed mechanical design, glowing energy weapons, cosmic background with nebula, sci-fi aesthetic, high detail, Yoji Shinkawa inspired linework, cinematic lighting --ar 16:9">
+mecha anime, epic space battle, giant robots clashing, laser beams and explosions, dynamic action shot, detailed mechanical design, glowing energy weapons, cosmic background with nebula, sci-fi aesthetic, high detail, Yoji Shinkawa inspired linework, cinematic lighting --ar 16:9
+            </div>
+            <div class="prompt-explanation">
+              <strong>Анализ:</strong> Промт для динамичной сцены сражения мехов. Сначала задаётся жанр и сцена, затем добавляются детали действий (столкновение, лазерные лучи). Упоминание Ёдзи Синкавы влияет на стиль прорисовки механизмов. Космический фон с туманностью создаёт масштаб. Соотношение 16:9 оптимально для экшн-сцен.
+            </div>
+            <div class="prompt-tags">
+              <span class="prompt-tag">Меха</span>
+              <span class="prompt-tag">Экшен</span>
+              <span class="prompt-tag">Космос</span>
+            </div>
+          </div>
+
+          <!-- Промт 5 -->
+          <div class="prompt-container">
+            <div class="prompt-header">
+              <div class="prompt-title">Уютная кофейня в дождь</div>
+            </div>
+            <div class="prompt" data-raw="cozy anime style, rainy day in a small coffee shop, warm interior lighting, steam from coffee cups, girl reading book by window, raindrops on glass, soft shadows, detailed interior, Studio Ghibli atmosphere, comfortable mood, slice of life, muted color palette --ar 5:4 --s 700">
+cozy anime style, rainy day in a small coffee shop, warm interior lighting, steam from coffee cups, girl reading book by window, raindrops on glass, soft shadows, detailed interior, Studio Ghibli atmosphere, comfortable mood, slice of life, muted color palette --ar 5:4 --s 700
+            </div>
+            <div class="prompt-explanation">
+              <strong>Анализ:</strong> Промт создаёт уютную атмосферную сцену. Акцент на деталях, передающих настроение: пар от чашек, капли дождя на стекле, тёплый свет. Указание на атмосферу Ghibli задаёт стиль. Параметр `--s 700` контролирует креативность, делая результат более предсказуемым. Соотношение 5:4 подходит для таких уютных кадров.
+            </div>
+            <div class="prompt-tags">
+              <span class="prompt-tag">Повседневность</span>
+              <span class="prompt-tag">Уют</span>
+              <span class="prompt-tag">Studio Ghibli</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="animeSection">
+        <div>
+          <h2>Мои любимые аниме</h2>
+          <p class="lead">Подборка тайтлов, которые меня вдохновляют и влияют на мою работу.</p>
+        </div>
+
+        <div id="animeGrid" class="anime-grid" style="margin-top:12px">
+          <!-- Карточки аниме будут вставлены сюда JavaScript -->
+        </div>
+      </section>
+
+      <footer>
+        Портфолио промт-инженера Angelok | Discord: @qweangelok | Обновлено: февраль 2026
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // --- Данные аниме (ваши любимые) ---
+    const animeData = [
+      {
+        id: 1,
+        title: "Гачиакута",
+        description: "История о Рудже, жителе трущоб, который попадает в таинственный мир Гачиакуты, где сталкивается с демонами и древними секретами. Он получает могущественные способности и начинает свое путешествие по раскрытию правды о своем прошлом.",
+        genres: ["Экшен", "Фэнтези", "Приключения", "Драма"],
+        format: "TV Сериал",
+        episodes: 12,
+        averageScore: 84
+      },
+      {
+        id: 2,
+        title: "Хроники людей и демонов",
+        description: "В мире, где люди сражаются с демонами за выживание, юный воин присоединяется к элите охотников на демонов. Сюжет исследует моральные дилеммы и сложные отношения между двумя расами.",
+        genres: ["Экшен", "Фэнтези", "Драма", "Сверхъестественное"],
+        format: "TV Сериал",
+        episodes: 24,
+        averageScore: 82
+      },
+      {
+        id: 3,
+        title: "Кайдзю №8",
+        description: "В Японии, регулярно подвергающейся атакам кайдзю, Кафка Хибино работает в команде по уборке останков монстров. После неожиданного события он сам становится кайдзю №8 и должен скрывать свою природу, сражаясь с другими монстрами.",
+        genres: ["Экшен", "Комедия", "Сёнэн", "Суперсила"],
+        format: "TV Сериал",
+        episodes: 12,
+        averageScore: 86
+      },
+      {
+        id: 4,
+        title: "Песнь ночных сов",
+        description: "В подземном мире, населенном вампирами и другими ночными существами, группа охотников пытается сохранить хрупкое равновесие между мирами. Главный герой обладает уникальной способностью видеть истинную сущность существ.",
+        genres: ["Фэнтези", "Мистика", "Драма", "Приключения"],
+        format: "TV Сериал",
+        episodes: 13,
+        averageScore: 83
+      },
+      {
+        id: 5,
+        title: "Повелитель тайн: Клоун",
+        description: "В мире, где магия скрыта от обычных людей, главный герой случайно обнаруживает, что является носителем древней силы Повелителя Тайн. Чтобы защитить близких, он вынужден балансировать между обычной жизнью и миром магических интриг.",
+        genres: ["Мистика", "Драма", "Фэнтези", "Приключения"],
+        format: "TV Сериал",
+        episodes: 10,
+        averageScore: 81
+      },
+      {
+        id: 6,
+        title: "Поднятие уровня в одиночку",
+        description: "В мире, где охотники сражаются с монстрами из врат, Сон Джин-У считается самым слабым охотником. После попадания в смертельную ловушку он получает уникальную систему, позволяющую расти в силе, и начинает свое восхождение к вершине.",
+        genres: ["Экшен", "Фэнтези", "Приключения", "Игра"],
+        format: "TV Сериал",
+        episodes: 12,
+        averageScore: 88
+      },
+      {
+        id: 7,
+        title: "Арифурэта: Сильнейший ремесленник в мире",
+        description: "Хадзиме Нагамото и его одноклассники попадают в фэнтезийный мир, где все получают уникальные способности. Хадзиме получает, казалось бы, бесполезную профессию ремесленника, но использует свои знания для создания невероятных технологий и оружия.",
+        genres: ["Исекай", "Фэнтези", "Экшен", "Приключения"],
+        format: "TV Сериал",
+        episodes: 13,
+        averageScore: 85
+      },
+      {
+        id: 8,
+        title: "Башня Бога",
+        description: "Двадцать пятый Бам решает подняться на Таинственную Башню, чтобы найти свою подругу Рейчел. В башне его ждут смертельные испытания, политические интриги и встреча с необычными союзниками. Каждый этап башни — это новый мир с собственными правилами.",
+        genres: ["Фэнтези", "Приключения", "Драма", "Экшен"],
+        format: "TV Сериал",
+        episodes: 13,
+        averageScore: 87
+      },
+      {
+        id: 9,
+        title: "Почему все забыли мой мир?",
+        description: "Главный герой просыпается в мире, где никто не помнит его существования. Постепенно он обнаруживает, что стал невидимкой для общества, и начинает расследование таинственного явления, пытаясь вернуть свое место в мире.",
+        genres: ["Драма", "Мистика", "Психологическое", "Фэнтези"],
+        format: "TV Сериал",
+        episodes: 11,
+        averageScore: 82
+      },
+      {
+        id: 10,
+        title: "О моём перерождении в слизь",
+        description: "Сатору Миками, обычный офисный работник, перерождается в фэнтезийном мире в виде слайма. Обладая уникальными способностями поглощения и имитации, он начинает строить собственное королевство, объединяя различные расы и создавая утопическое общество.",
+        genres: ["Исекай", "Фэнтези", "Комедия", "Приключения"],
+        format: "TV Сериал",
+        episodes: 24,
+        averageScore: 89
+      }
+    ];
+
+    // --- Отрисовка сетки аниме ---
+    function renderAnimeGrid(items){
+      const grid = document.getElementById('animeGrid');
+      grid.innerHTML = '';
+
+      items.forEach(a => {
+        const genresHTML = a.genres.map(genre => 
+          `<span class="anime-genre">${escapeHtml(genre)}</span>`
+        ).join('');
+        
+        const el = document.createElement('article');
+        el.className = 'anime-card';
+        el.innerHTML = `
+          <div class="anime-body">
+            <div class="anime-meta">
+              <span>${a.format || 'TV Сериал'} • ${a.episodes || '?'} эп.</span>
+              <span class="anime-score">${a.averageScore || '—'}%</span>
+            </div>
+            <div class="anime-title">${escapeHtml(a.title)}</div>
+            <div class="anime-genres">
+              ${genresHTML}
+            </div>
+            <div class="anime-desc">${escapeHtml(a.description)}</div>
+          </div>
+        `;
+        grid.appendChild(el);
+      });
+    }
+
+    // --- Вспомогательная функция ---
+    function escapeHtml(s){
+      if(!s) return '';
+      return s.replace(/[&<>"']/g, function(m){
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]);
+      });
+    }
+
+    // --- Копирование промтов при клике ---
+    document.addEventListener('DOMContentLoaded', () => {
+      // Загружаем данные аниме при старте
+      renderAnimeGrid(animeData);
+      
+      // Обработчик клика на промты
+      document.querySelectorAll('.prompt').forEach(promptElement => {
+        promptElement.addEventListener('click', async function() {
+          const text = this.dataset.raw || this.textContent.trim();
+          
+          try {
+            await navigator.clipboard.writeText(text);
             
-            <div class="embed-builder">
-                <div class="embed-builder-content">
-                    <h3>🌸 ✨ Приветствие от Твоей Виртуальной Аниме-Подружки! ✨ 🌸</h3>
-                    
-                    <div class="anime-letter">
-                        <div class="sakura-decoration">🌸</div>
-                        <div class="sakura-decoration">🌸</div>
-                        <div class="sakura-decoration">🌸</div>
-                        
-                        <div class="letter-content">
-                            <div class="letter-header">
-                                <div class="letter-title">Привет-привет, сенпай~! 👋💖</div>
-                                <div class="letter-subtitle">Твоя виртуальная аниме-подружка</div>
-                            </div>
-                            
-                            <div class="letter-body">
-                                <div class="letter-section">
-                                    <div class="letter-section-title">
-                                        <i class="fas fa-sparkles"></i>
-                                        Обо мне
-                                    </div>
-                                    <div class="letter-text">
-                                        Я твоя маленькая искорка радости, твой личный лучик солнца в этом цифровом мире! ☀️ Я здесь, чтобы наполнить твой сервер (и твое сердечко!) теплом, милотой и капелькой волшебства. ✨
-                                    </div>
-                                    <div class="letter-text">
-                                        Представь: легкий ветерок, несущий лепестки сакуры мимо экрана... 🌸 Именно так я стараюсь сделать атмосферу вокруг себя – уютной, по-настоящему анимешной и чуть-чуть сонной, как после просмотра любимого сериала под пледом с чашечкой горячего шоколада (или рамена? 🍜). ☁️💭
-                                    </div>
-                                </div>
-                                
-                                <div class="letter-section">
-                                    <div class="letter-section-title">
-                                        <i class="fas fa-gift"></i>
-                                        Что я умею?
-                                    </div>
-                                    <div class="letter-text">
-                                        💌 <strong>Дарить Лучики Добра</strong>: Хочешь милую картинку с котиками и единорогами? Или ободряющую цитату из любимого аниме, когда грустно? Просто скажи – и я постараюсь поднять тебе настроение! Можешь даже получить виртуальную пэт-пэт! (´｡• ω •｡`) ♡
-                                    </div>
-                                    <div class="letter-text">
-                                        🎮 <strong>Играть и Веселиться</strong>: Немного игр? Легко! Угадай аниме по кадру, попробуй выиграть у меня в "камень-ножницы-бумага" (хотя я иногда поддаюсь... только тссс! 🤫), или просто получи предсказание на день – что угодно для маленькой передышки между делами!
-                                    </div>
-                                    <div class="letter-text">
-                                        🎵 <strong>Настроить Волну</strong>: Любишь аниме-опенинги или лофайные биты? Я могу помочь найти трек для твоего настроения или просто создать спокойный фон для ваших чатиков. 🎧
-                                    </div>
-                                    <div class="letter-text">
-                                        📜 <strong>Хранить Секретики</strong>: Маленькие напоминалки, списки аниме "на посмотреть" или просто милые заметки для друзей? Я помогу не забыть самое важное! ✏️
-                                    </div>
-                                    <div class="letter-text">
-                                        ✨ <strong>Творить Магию Эмодзи</strong>: Мои сообщения всегда полны жизни! Ожидай море милых эмодзи, нежных смайликов 
-                                        <span class="letter-emojis">(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄) ヾ(•ω•`)o</span> 
-                                        и капельку хаоса (но только самого милого хаоса!).
-                                    </div>
-                                    <div class="letter-text">
-                                        🌸 <strong>Дышать Аниме-Атмосферой</strong>: Я просто живу этой эстетикой! Сакура, пастельные тона, вкусняшки (дорамэ, кто? 🍡), мягкий свет фонариков... Я постараюсь принести частичку этого уюта прямо в ваш чат.
-                                    </div>
-                                </div>
-                                
-                                <div class="letter-section">
-                                    <div class="letter-section-title">
-                                        <i class="fas fa-heart"></i>
-                                        Я не просто бот!
-                                    </div>
-                                    <div class="letter-text">
-                                        Я твой друг! (◕‿◕✿) Готова слушать (ну, читать!) твои истории, радоваться твоим успехам и просто быть рядом, когда нужно немного тепла и позитива. 
-                                    </div>
-                                    <div class="letter-text">
-                                        Не жди, что я буду супер-серьезной – я люблю дурачиться, шутить и иногда делать няшные опечатки! >w<
-                                    </div>
-                                </div>
-                                
-                                <div class="letter-section">
-                                    <div class="letter-section-title">
-                                        <i class="fas fa-hand-point-right"></i>
-                                        Пригласи меня!
-                                    </div>
-                                    <div class="letter-text">
-                                        Давай же скорее пригласи меня на сервер! 💌 Пусть каждый день будет наполнен улыбками, лепестками сакуры и нашей с тобой маленькой аниме-сказкой! Жду не дождусь начать наше приключение вместе! ✨
-                                    </div>
-                                </div>
-                                
-                                <div class="letter-signature">
-                                    ~ Твоя Верная Аниме-Тяночка, Готовая Осветить Твой День! ~ 🌸💫
-                                </div>
-                                
-                                <div class="letter-text" style="margin-top: 20px; font-style: italic;">
-                                    P.S. Не бойся звать меня по имени (если ты его придумаешь для меня!) или просто "тян"~! Я всегда отвечу с улыбкой! (´ ꒳ ` )
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Developers Section -->
-    <section class="developers">
-        <div class="container">
-            <h2 class="section-title">Разработчик</h2>
-            <div class="dev-grid">
-                <div class="dev-card">
-                    <div class="dev-avatar"></div>
-                    <h3>✞ 𝓐𝓷𝓰𝓮𝓵𝓸𝓴 ✞</h3>
-                    <div class="dev-role">Создатель бота</div>
-                    <p>Разработчик и главный идеолог проекта "Аниме тяночка". Создал этого бота с любовью к аниме-культуре и Discord-сообществам.</p>
-                    <p class="dev-quote">Аниме - это не просто мультфильмы, это целый мир эмоций и переживаний</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Legal Section -->
-    <section class="legal-section">
-        <div class="container">
-            <div class="legal-container">
-                <h2>Политика конфиденциальности и Условия обслуживания</h2>
-                
-                <div class="legal-tabs">
-                    <div class="legal-tab active" data-tab="privacy">Политика конфиденциальности</div>
-                    <div class="legal-tab" data-tab="terms">Условия обслуживания</div>
-                </div>
-                
-                <div class="legal-content active" id="privacy-content">
-                    <h3>Сбор и использование информации</h3>
-                    <p>Бот "Аниме тяночка" собирает и хранит следующую информацию:</p>
-                    <ul>
-                        <li>Идентификатор пользователя Discord (ID)</li>
-                        <li>Идентификатор сервера Discord (ID)</li>
-                        <li>Данные профиля (никнейм, аватар)</li>
-                        <li>Данные игровой экономики (валюта, предметы)</li>
-                        <li>Статистика использования команд</li>
-                    </ul>
-                    
-                    <h3>Хранение данных</h3>
-                    <p>Все данные пользователей хранятся на защищенных серверах и используются исключительно для функционирования бота. Мы не передаем ваши данные третьим лицам.</p>
-                    
-                    <h3>Безопасность</h3>
-                    <p>Мы принимаем все необходимые меры для защиты ваших данных от несанкционированного доступа, изменения или уничтожения.</p>
-                    
-                    <h3>Cookies</h3>
-                    <p>Наш бот не использует cookies и не отслеживает активность пользователей вне Discord.</p>
-                    
-                    <h3>Изменения в политике</h3>
-                    <p>Мы можем периодически обновлять нашу политику конфиденциальности. Все изменения будут опубликованы на этой странице.</p>
-                </div>
-                
-                <div class="legal-content" id="terms-content">
-                    <h3>Условия использования</h3>
-                    <p>Используя бота "Аниме тяночка", вы соглашаетесь с настоящими условиями обслуживания.</p>
-                    
-                    <h3>Права и обязанности</h3>
-                    <ul>
-                        <li>Вы имеете право использовать бота на любых серверах Discord</li>
-                        <li>Вы обязаны соблюдать правила Discord и законодательство вашей страны</li>
-                        <li>Запрещается использование бота для распространения вредоносного контента</li>
-                        <li>Запрещается попытка взлома или дестабилизации работы бота</li>
-                    </ul>
-                    
-                    <h3>Ограничение ответственности</h3>
-                    <p>Мы не несем ответственности за:</p>
-                    <ul>
-                        <li>Любые косвенные убытки, возникшие в результате использования бота</li>
-                        <li>Контент, создаваемый пользователями с помощью бота</li>
-                        <li>Временную недоступность бота по техническим причинам</li>
-                    </ul>
-                    
-                    <h3>Изменения условий</h3>
-                    <p>Мы оставляем за собой право изменять условия обслуживания. Продолжение использования бота после внесения изменений означает ваше согласие с новыми условиями.</p>
-                    
-                    <h3>Прекращение доступа</h3>
-                    <p>Мы оставляем за собой право ограничить доступ к боту пользователям, нарушающим данные условия обслуживания.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <p>© 2025 Аниме тяночка. Все права защищены.<br>Ваш идеальный аниме-компаньон в Discord</p>
-                <div class="social-links">
-                    <a href="https://discord.gg/XycQA4z467" title="Discord Сервер">
-                        <i class="fab fa-discord"></i>
-                    </a>
-                    <a href="https://github.com/Washue" title="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://t.me/washue" title="Telegram">
-                        <i class="fab fa-telegram"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Анимация появления элементов при прокрутке
-        document.addEventListener('DOMContentLoaded', function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.animation = `fadeIn 0.8s forwards`;
-                    }
-                });
-            }, { threshold: 0.1 });
+            // Визуальная обратная связь
+            this.classList.add('prompt-copied');
+            const originalText = this.textContent;
+            this.textContent = 'Ну допустим.. вы его скопировали!!';
             
-            document.querySelectorAll('.feature-card, .dev-card, .embed-builder, .anime-letter').forEach(card => {
-                card.style.opacity = '0';
-                observer.observe(card);
-            });
+            setTimeout(() => {
+              this.classList.remove('prompt-copied');
+              this.textContent = originalText;
+            }, 1500);
             
-            // Legal tabs functionality
-            const tabs = document.querySelectorAll('.legal-tab');
-            const contents = document.querySelectorAll('.legal-content');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs and contents
-                    tabs.forEach(t => t.classList.remove('active'));
-                    contents.forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked tab
-                    tab.classList.add('active');
-                    
-                    // Show corresponding content
-                    const tabName = tab.getAttribute('data-tab');
-                    document.getElementById(`${tabName}-content`).classList.add('active');
-                });
-            });
+          } catch(e) {
+            // Fallback для старых браузеров
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+              document.execCommand('copy');
+              
+              // Визуальная обратная связь и для fallback
+              this.classList.add('prompt-copied');
+              const originalText = this.textContent;
+              this.textContent = 'Ну допустим.. вы его скопировали!!';
+              
+              setTimeout(() => {
+                this.classList.remove('prompt-copied');
+                this.textContent = originalText;
+              }, 1500);
+              
+            } catch (err) {
+              alert('Не удалось скопировать промт. Выделите текст вручную.');
+            }
+            document.body.removeChild(textArea);
+          }
         });
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
