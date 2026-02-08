@@ -23,7 +23,7 @@ const animeData = [
     format_de: "TV-Serie",
     format_ja: "TVシリーズ",
     format_zh: "电视系列",
-    episodes: 12,
+    episodes: 24,
     averageScore: 84
   },
   {
@@ -75,7 +75,7 @@ const animeData = [
     format_de: "TV-Serie",
     format_ja: "TVシリーズ",
     format_zh: "电视系列",
-    episodes: 12,
+    episodes: 23,
     averageScore: 86
   },
   {
@@ -101,7 +101,7 @@ const animeData = [
     format_de: "TV-Serie",
     format_ja: "TVシリーズ",
     format_zh: "电视系列",
-    episodes: 13,
+    episodes: 25,
     averageScore: 83
   },
   {
@@ -127,7 +127,7 @@ const animeData = [
     format_de: "TV-Serie",
     format_ja: "TVシリーズ",
     format_zh: "电视系列",
-    episodes: 10,
+    episodes: 13,
     averageScore: 81
   },
   {
@@ -153,7 +153,7 @@ const animeData = [
     format_de: "TV-Serie",
     format_ja: "TVシリーズ",
     format_zh: "电视系列",
-    episodes: 12,
+    episodes: 25,
     averageScore: 88
   },
   {
@@ -179,7 +179,7 @@ const animeData = [
     format_de: "TV-Serie",
     format_ja: "TVシリーズ",
     format_zh: "电视系列",
-    episodes: 13,
+    episodes: 41,
     averageScore: 85
   },
   {
@@ -205,7 +205,7 @@ const animeData = [
     format_de: "TV-Serie",
     format_ja: "TVシリーズ",
     format_zh: "电视系列",
-    episodes: 13,
+    episodes: 39,
     averageScore: 87
   },
   {
@@ -231,7 +231,7 @@ const animeData = [
     format_de: "TV-Serie",
     format_ja: "TVシリーズ",
     format_zh: "电视系列",
-    episodes: 11,
+    episodes: 12,
     averageScore: 82
   },
   {
@@ -257,7 +257,8 @@ const animeData = [
     format_de: "TV-Serie",
     format_ja: "TVシリーズ",
     format_zh: "电视系列",
-    episodes: 24,
+    episodes: 84,
     averageScore: 89
   }
+
 ];
