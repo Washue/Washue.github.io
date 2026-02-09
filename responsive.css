@@ -16,6 +16,15 @@
     top: 10px;
     right: 10px;
   }
+  
+  /* Добавлено для производительности */
+  .anime-card, .prompt-container {
+    transform: translateZ(0);
+  }
+  
+  .language-switcher {
+    transform: translateZ(0);
+  }
 }
 
 @media (max-width: 600px) {
@@ -36,5 +45,11 @@
     padding: 4px 8px;
     font-size: 11px;
     min-width: 30px;
+  }
+  
+  /* Оптимизация для мобильных */
+  .prompt {
+    font-size: 12px;
+    padding: 10px;
   }
 }
