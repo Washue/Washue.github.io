@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <title id="page-title">Промт-инженер — Angelok</title>
+  <meta name="description" content="Специалист по промт-инжинирингу: создаю сложные промты для нейросетей, сайтов, постов и креативных проектов." />
+  <link rel="icon" href="https://grizly.club/uploads/posts/2023-08/1691505142_grizly-club-p-kartinki-fioletovii-krug-bez-fona-46.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="https://grizly.club/uploads/posts/2023-08/1691505142_grizly-club-p-kartinki-fioletovii-krug-bez-fona-46.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <!-- Кнопки переключения языка -->
+  <div class="language-switcher">
+    <button class="lang-btn active" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="de">DE</button>
+    <button class="lang-btn" data-lang="ja">日本語</button>
+    <button class="lang-btn" data-lang="zh">中文</button>
+  </div>
+
+  <div class="container">
+    <aside class="sidebar card">
+      <div class="avatar-container">
+        <img src="https://i.pinimg.com/736x/fe/7f/42/fe7f420fff6b113e1ab6188ab638ecf9.jpg" alt="Angelok" class="avatar-img">
+      </div>
+      <h1 id="name">Angelok</h1>
+      <div id="role" class="role">Промт-инженер & Аниме-энтузиаст</div>
+
+      <div class="info-block">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span id="skills-title">Навыки</span>
+          <span id="experience" style="font-size:12px; color:var(--muted)">Опыт: 3+ года</span>
+        </div>
+        <div class="skill-viz">
+          <div class="skill-item">
+            <span class="skill-name">Stable Diffusion</span>
+            <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Midjourney</span>
+            <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span id="anime-stylization" class="skill-name">Аниме-стилизация</span>
+            <div class="skill-bar"><div class="skill-fill" style="width:98%"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">LoRA / ControlNet</span>
+            <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <span id="contacts-title">Контакты</span>
+        <div style="margin-top:8px; font-size:13px; color:var(--muted)">
+          <div>Discord: @qweangelok</div>
+          <div>Telegram: @ztcqidxx</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="card">
+        <h2 id="about-title">Обо мне</h2>
+        <p id="about-text1" class="lead">
+          Я — специалист по промт-инжинирингу с широким профилем работ. Моя деятельность включает создание сложных промтов для генерации аниме-артов в нейросетях, разработку текстового контента для сайтов и постов, а также генерацию креативных идей для различных проектов.
+        </p>
+        <p id="about-text2" class="lead">
+          Экспериментирую с архитектурой нейросетей, весами, комбинациями стилей и параметрами моделей для достижения нужного результата — будь то визуальные образы, текстовый контент или комплексные решения. Мой подход — глубокое понимание механизмов работы AI и создание точных, детализированных промтов, которые превращают абстрактные концепции в качественный конечный продукт.
+        </p>
+      </section>
+
+      <section class="card">
+        <div>
+          <h2 id="prompts-title">Коллекция промтов</h2>
+          <p id="prompts-desc" class="lead">Нажмите на любой промт, чтобы скопировать его в буфер обмена.</p>
+        </div>
+
+        <div class="prompts" id="prompts">
+          <!-- Промты будут вставлены через JavaScript -->
+        </div>
+      </section>
+
+      <section class="card" id="animeSection">
+        <div>
+          <h2 id="anime-title">Мои любимые аниме</h2>
+          <p id="anime-desc" class="lead">Подборка тайтлов, которые меня вдохновляют и влияют на мою работу.</p>
+        </div>
+
+        <div id="animeGrid" class="anime-grid" style="margin-top:12px">
+          <!-- Карточки аниме будут вставлены сюда JavaScript -->
+        </div>
+      </section>
+
+      <footer>
+        <span id="footer-text">Портфолио промт-инженера Angelok | Discord: @qweangelok | Обновлено: февраль 2026</span>
+        <br><br>
+      </footer>
+    </main>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="translations.js"></script>
+  <script src="anime-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
