@@ -42,12 +42,41 @@ const promptsData = [
   }
 ];
 
-// --- Отрисовка сетки аниме с картинками ---
+// --- Вспомогательная функция (оптимизированная) ---
+const escapeMap = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;'
+};
+
+function escapeHtml(s) {
+  if(!s) return '';
+  return String(s).replace(/[&<>"']/g, function(m) {
+    return escapeMap[m];
+  });
+}
+
+// --- Утилита дебаунса для оптимизации ---
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// --- Отрисовка сетки аниме с ленивой загрузкой изображений ---
 function renderAnimeGrid(items, lang = 'ru') {
   const grid = document.getElementById('animeGrid');
   grid.innerHTML = '';
 
-  items.forEach(a => {
+  items.forEach((a, index) => {
     // Получаем данные для текущего языка
     const title = a[`title_${lang}`] || a.title;
     const description = a[`description_${lang}`] || a.description;
@@ -58,15 +87,15 @@ function renderAnimeGrid(items, lang = 'ru') {
       `<span class="anime-genre">${escapeHtml(genre)}</span>`
     ).join('');
     
-    // Проверяем, есть ли изображение
-    const imageStyle = a.image ? 
-      `background-image: url('${a.image}')` : 
-      'background: linear-gradient(135deg, var(--accent1), var(--accent2))';
-    
     const el = document.createElement('article');
     el.className = 'anime-card';
+    // Добавляем data-атрибут для ленивой загрузки
     el.innerHTML = `
-      <div class="anime-image" style="${imageStyle}">
+      <div class="anime-image" data-src="${a.image || ''}" style="
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        background-size: cover;
+        background-position: center;
+      ">
         <div class="anime-image-overlay"></div>
       </div>
       <div class="anime-body">
@@ -81,7 +110,23 @@ function renderAnimeGrid(items, lang = 'ru') {
         <div class="anime-desc">${escapeHtml(description)}</div>
       </div>
     `;
+    
     grid.appendChild(el);
+    
+    // Ленивая загрузка изображений
+    if (a.image) {
+      setTimeout(() => {
+        const imageDiv = el.querySelector('.anime-image');
+        const img = new Image();
+        img.onload = () => {
+          imageDiv.style.backgroundImage = `url('${a.image}')`;
+        };
+        img.onerror = () => {
+          // Если изображение не загрузилось, оставляем градиентный фон
+        };
+        img.src = a.image;
+      }, index * 30); // Небольшая задержка для плавной загрузки
+    }
   });
 }
 
@@ -178,14 +223,6 @@ function setupPromptCopyListeners(lang = 'ru') {
   });
 }
 
-// --- Вспомогательная функция ---
-function escapeHtml(s) {
-  if(!s) return '';
-  return s.replace(/[&<>"']/g, function(m) {
-    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]);
-  });
-}
-
 // --- Функция смены языка ---
 function changeLanguage(lang) {
   // Обновляем активную кнопку
@@ -216,15 +253,45 @@ function changeLanguage(lang) {
   // Обновляем заголовок страницы
   document.title = t['page-title'];
   
-  // Обновляем промты
-  renderPrompts(lang);
-  
-  // Обновляем сетку аниме
-  renderAnimeGrid(animeData, lang);
+  requestAnimationFrame(() => {
+    // Обновляем промты
+    renderPrompts(lang);
+    
+    // Обновляем сетку аниме с небольшой задержкой
+    setTimeout(() => {
+      renderAnimeGrid(animeData, lang);
+    }, 50);
+  });
   
   // Сохраняем выбор языка
   localStorage.setItem('preferredLanguage', lang);
 }
+
+// Оптимизированное обновление языка с дебаунсом
+const debouncedChangeLanguage = debounce(changeLanguage, 50);
+
+// --- Предотвращение скачков при скролле ---
+let isScrolling = false;
+
+window.addEventListener('scroll', () => {
+  if (!isScrolling) {
+    requestAnimationFrame(() => {
+      isScrolling = false;
+    });
+    isScrolling = true;
+  }
+}, { passive: true });
+
+// Предотвращение двойного тапа на мобильных
+let lastTap = 0;
+document.addEventListener('touchend', function(e) {
+  const currentTime = new Date().getTime();
+  const tapLength = currentTime - lastTap;
+  if (tapLength < 300 && tapLength > 0) {
+    e.preventDefault();
+  }
+  lastTap = currentTime;
+}, { passive: true });
 
 // --- Инициализация при загрузке ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -238,11 +305,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedLang = localStorage.getItem('preferredLanguage') || 'ru';
   changeLanguage(savedLang);
   
-  // Обработчики для кнопок переключения языка
+  // Обработчики для кнопок переключения языка с дебаунсом
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const lang = this.dataset.lang;
-      changeLanguage(lang);
+      requestAnimationFrame(() => {
+        debouncedChangeLanguage(lang);
+      });
     });
   });
 });
