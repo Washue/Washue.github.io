@@ -22,7 +22,7 @@ html, body {
 body {
   margin: 0;
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: url('https://i.ibb.co/xWfh2WJ/photo-2026-02-15-19-59-58.jpg') no-repeat center center fixed,
+  background: url('https://i.ibb.co/jmXykYs/generated-7535909.png') no-repeat center center fixed,
               radial-gradient(1200px 600px at 10% 10%, rgba(127,34,255,0.12), transparent),
               radial-gradient(1000px 450px at 90% 90%, rgba(122,255,255,0.06), transparent),
               linear-gradient(180deg, var(--bg1), var(--bg2));
@@ -469,3 +469,4 @@ footer {
   }
 
 }
+
